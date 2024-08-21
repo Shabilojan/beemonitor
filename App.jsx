@@ -5,7 +5,6 @@ import Menu from './screens/Menu';
 
 const App = () => {
   return (
-    // <Home/>
     <Menu/>
   );
 };
