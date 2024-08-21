@@ -13,22 +13,17 @@ const Home = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ImageBackground style={styles.container} source={require('../assets/Bg.png')}>
-      <ImageBackground
-        // style={styles.overlayImage}
-        // source={require('../assets/Overlay.jpg')}
-        // imageStyle={{ opacity: 0.40 }}
-      >
-        <View style={styles.darkOverlay} />
+    <ImageBackground style={styles.container} source={require('../assets/1.png')}>
+      <View style={styles.overlay}>
         <View style={styles.content}>
-          <Image style={styles.logo} source={require('../assets/logo.png')} />
+          <Image style={styles.logo} source={require('../assets/3.png')} />
           <ActivityIndicator size="large" color="#00ff00" style={styles.activityIndicator} />
           <View style={styles.textView}>
             <Text style={styles.text}>Powered By</Text>
             <Text style={styles.marginTop20}>Techno brain</Text>
           </View>
         </View>
-      </ImageBackground>
+      </View>
     </ImageBackground>
   );
 };
@@ -37,29 +32,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  overlayImage: {
-    flex: 1,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  darkOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
   content: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    marginTop: 80,
-    alignSelf: 'center',
+    width: 400, 
+    height: 400, 
   },
   activityIndicator: {
-    marginTop: 10,
+    marginTop: 50, 
   },
   textView: {
-    marginTop: 80,
+    marginTop: 180, 
     alignItems: 'center',
   },
   text: {
@@ -74,9 +64,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: '200',
-    
-
-
   },
 });
 
