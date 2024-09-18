@@ -18,9 +18,8 @@ const Boxcode = ({ navigation }) => {
             style={styles.background}
         >
             <View style={styles.container}>
-                <Text style={styles.title}>Enter your box code </Text>
+                <Text style={styles.title}>Enter your box code</Text>
                 
-             
                 <TextInput
                     style={styles.input}
                     placeholder="Enter 4-digit box code"
@@ -89,6 +88,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 20,
         elevation: 5,
+        color: '#000', 
     },
     button: {
         backgroundColor: '#ffcc80',
