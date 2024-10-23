@@ -5,6 +5,8 @@ import Home from './screens/Home';
 import Hive from './screens/Hive';
 import Menu from './screens/Menu';
 import Boxcode from './screens/Boxcode';
+import Welcome from './screens/Welcome';
+import User from './screens/User';
 
 const Stack = createStackNavigator();
 
@@ -34,9 +36,20 @@ const App = () => {
           options={{ headerShown: false }} 
         /> */}
 
-<Stack.Screen 
+{/* <Stack.Screen 
           name="Hive" 
           component={Hive} 
+          options={{ headerShown: false }} 
+        /> */}
+        {/* <Stack.Screen 
+          name="Welcome" 
+          component={Welcome} 
+          options={{ headerShown: false }} 
+        /> */}
+
+<Stack.Screen 
+          name="User" 
+          component={User} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>
