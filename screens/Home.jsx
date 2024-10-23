@@ -5,7 +5,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (navigation && typeof navigation.navigate === 'function') {
-        navigation.navigate('Menu');
+        navigation.navigate('Login');
       }
     }, 5000);
 

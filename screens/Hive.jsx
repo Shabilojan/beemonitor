@@ -1,147 +1,254 @@
-import React from 'react';
-import { View, Text, ImageBackground, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Hive = ({ navigation }) => {
+const Hive = () => {
+    const [hive, setHive] = useState(null);
+    const [hiveNo, setHiveNo] = useState('');
+    const [searched, setSearched] = useState(false);
+    const [message, setMessage] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [editData, setEditData] = useState({});
+    const [isCreating, setIsCreating] = useState(false);
+    const [newHive, setNewHive] = useState({
+        hiveNo: '',
+        humidity: '',
+        temperature: '',
+        beeInOut: '',
+        raindrops: '',
+        expectedHarvestDate: '',
+        honeyLevel: '',
+    });
+    const [userRole, setUserRole] = useState('');
+
+    // Fetch user role from AsyncStorage
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            const role = await AsyncStorage.getItem('role');
+            setUserRole(role);
+        };
+        fetchUserRole();
+    }, []);
+
+    // Fetch hive details
+    const fetchHiveDetails = () => {
+        console.log(`Fetching hive details for hiveNo: ${hiveNo}`);
+        axios.get(`http://10.0.2.2:3000/hive-details?hiveNo=${hiveNo}`) // Use the correct IP address
+            .then(response => {
+                console.log('Response received:', response.data);
+                if (response.data.success) {
+                    setHive(response.data.data);
+                    setEditData(response.data.data);
+                    setMessage('');
+                } else {
+                    setHive(null);
+                    setMessage('No hive details found.');
+                }
+            })
+            .catch(error => {
+                console.log('Error fetching hive details:', error);
+                setHive(null);
+                setMessage('Error fetching hive details');
+            });
+    };
+
+    const handleSearch = () => {
+        if (hiveNo) {
+            setSearched(true);
+            fetchHiveDetails();
+        }
+    };
+
+    const handleClear = () => {
+        setHive(null);
+        setHiveNo('');
+        setSearched(false);
+        setMessage('');
+        setIsEditing(false);
+        setIsCreating(false);
+    };
+
+    const handleDelete = () => {
+        Alert.alert('Delete Confirmation', `Are you sure you want to delete Hive #${hiveNo}?`, [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {
+                text: 'Delete',
+                onPress: () => {
+                    axios.delete(`http://10.0.2.2:5000/hive-details?hiveNo=${hiveNo}`)
+                        .then(() => {
+                            setMessage(`Hive #${hiveNo} has been deleted.`);
+                            setHive(null);
+                            setSearched(false);
+                            setHiveNo('');
+                            setIsEditing(false);
+                        })
+                        .catch(() => {
+                            setMessage('Failed to delete hive.');
+                        });
+                },
+            },
+        ]);
+    };
+
+    const handleEditToggle = () => {
+        setIsEditing(!isEditing);
+    };
+
+    const handleEditInputChange = (name, value) => {
+        setEditData(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleUpdate = () => {
+        axios.put(`http://10.0.2.2:3000/hive-details`, editData)
+            .then(() => {
+                setMessage(`Hive #${editData.hiveNo} has been updated.`);
+                setIsEditing(false);
+                fetchHiveDetails();
+            })
+            .catch(() => {
+                setMessage('Failed to update hive.');
+            });
+    };
+
+    const handleCreateToggle = () => {
+        setIsCreating(!isCreating);
+        setNewHive({
+            hiveNo: '',
+            humidity: '',
+            temperature: '',
+            beeInOut: '',
+            raindrops: '',
+            expectedHarvestDate: '',
+            honeyLevel: '',
+        });
+    };
+
+    const handleCreateInputChange = (name, value) => {
+        setNewHive(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleCreate = () => {
+        axios.post('http://10.0.2.2:5000/hive-details', newHive)
+            .then(() => {
+                setMessage(`Hive #${newHive.hiveNo} has been created.`);
+                setIsCreating(false);
+                setHive(null);
+                setHiveNo('');
+            })
+            .catch(() => {
+                setMessage('Failed to create hive.');
+            });
+    };
+
     return (
-        <ImageBackground
-            source={require('../assets/hive.png')}
-            style={styles.background}
-        >
-            <View style={styles.container}>
-                <Text style={styles.title}>Choose your way to check...</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('')}
-                >
-                    <Text style={styles.buttonText}>Enter the box code</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('')}
-                >
-                    <Text style={styles.buttonText}>Scan QR code</Text>
-                </TouchableOpacity>
+        <ScrollView style={styles.container}>
+            <Text style={styles.title}>Hive Details</Text>
+
+            <View style={styles.searchBar}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Hive Number"
+                    keyboardType="numeric"
+                    value={hiveNo}
+                    onChangeText={setHiveNo}
+                />
+                <Button title="Search" onPress={handleSearch} />
+                <Button title="Clear" onPress={handleClear} />
+                {userRole === 'Admin' && (
+                    <Button title={isCreating ? 'Cancel' : 'Create Hive'} onPress={handleCreateToggle} />
+                )}
             </View>
 
-            <View style={styles.footer}>
-                <TouchableOpacity onPress={() => navigation.navigate('HiveScreen')} style={styles.footerItem}>
-                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>HIVE</Text>
-                </TouchableOpacity>
-                
-                <View style={styles.iconWrapper}>
-                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
-                    <Text style={styles.centeredText}>Dashboard</Text>
+            {message ? <Text style={styles.message}>{message}</Text> : null}
+
+            {searched && hive && !isEditing && (
+                <View style={styles.hiveCard}>
+                    <Text style={styles.hiveTitle}>Hive #{hive.hiveNo}</Text>
+                    <Text style={styles.hiveText}>Humidity: {hive.humidity}</Text>
+                    <Text style={styles.hiveText}>Temperature: {hive.temperature}</Text>
+                    <Text style={styles.hiveText}>Bee In/Out: {hive.beeInOut}</Text>
+                    <Text style={styles.hiveText}>Raindrops: {hive.raindrops}</Text>
+                    <Text style={styles.hiveText}>Expected Harvest Date: {new Date(hive.expectedHarvestDate).toLocaleDateString()}</Text>
+                    <Text style={styles.hiveText}>Honey Level: {hive.honeyLevel}</Text>
+
+                    {userRole === 'Admin' && (
+                        <>
+                            <Button title="Delete Hive" onPress={handleDelete} />
+                            <Button title="Edit Hive" onPress={handleEditToggle} />
+                        </>
+                    )}
                 </View>
-                
-                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
-                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>Honey Bar</Text>
-                </TouchableOpacity>
-            </View>
-        </ImageBackground>
+            )}
+
+            {isEditing && (
+                <View style={styles.hiveCard}>
+                    <Text style={styles.hiveTitle}>Edit Hive #{editData.hiveNo}</Text>
+                    {/* Add Input fields for Editing */}
+                </View>
+            )}
+
+            {isCreating && userRole === 'Admin' && (
+                <View style={styles.hiveCard}>
+                    {/* Add Input fields for Creating */}
+                </View>
+            )}
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        
-    },
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 100,
+        padding: 16,
+        backgroundColor: '#000',
     },
     title: {
-        fontSize: 26,
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 16,
         color: '#fff',
-        marginBottom: 40,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
-    button: {
-        backgroundColor: '#ffcc80',
-        padding: 15,
-        borderRadius: 20,
-        marginVertical: 10,
-        width: '70%',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-    },
-    buttonText: {
-        color: '#000',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    footer: {
+    searchBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#ffd54f',
-        width: '100%',
-        height: 80,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: -2,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 40,
+        marginBottom: 16,
     },
-    footerItem: {
-        alignItems: 'center',
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 8,
+        flex: 1,
+        marginRight: 8,
+        color: '#fff', // Ensures text inside TextInput is visible
     },
-    icon: {
-        width: 35,
-        height: 35,
+    message: {
+        color: 'red',
+        marginBottom: 16,
     },
-    roundIcon: {
-        marginHorizontal: 170,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderWidth: 2,
-        borderColor: '#000',
-        marginBottom: 12,
-        backgroundColor: '#ffd54f',
+    hiveCard: {
+        backgroundColor: '#333', // Ensure card background contrasts with text
+        padding: 16,
+        borderRadius: 8,
+        marginBottom: 16,
+        elevation: 3,
     },
-    iconWrapper: {
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 10,
-        justifyContent: 'center',
-    },
-    centeredText: {
-        fontSize: 14,
-        color: '#000',
+    hiveTitle: {
+        fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 2,
+        marginBottom: 8,
+        color: '#fff',
     },
-    footerText: {
-        marginTop: 5,
-        fontSize: 14,
-        color: '#000',
-        fontWeight: 'bold',
+    hiveText: {
+        color: '#fff', // Ensure text color is white for visibility
     },
 });
 

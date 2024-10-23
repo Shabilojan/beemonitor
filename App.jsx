@@ -1,12 +1,19 @@
-import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from'./screens/Login';
 import Home from './screens/Home';
-import Menu from './screens/Menu';
-import Boxcode from './screens/Boxcode';
+import Hive from './screens/Hive';
 
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <Boxcode/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Hive">
+        <Stack.Screen name="Hive" component={Hive} />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
