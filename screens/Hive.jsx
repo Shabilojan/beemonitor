@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Hive = () => {
     const [hive, setHive] = useState(null);
@@ -20,21 +19,11 @@ const Hive = () => {
         expectedHarvestDate: '',
         honeyLevel: '',
     });
-    const [userRole, setUserRole] = useState('');
-
-    // Fetch user role from AsyncStorage
-    useEffect(() => {
-        const fetchUserRole = async () => {
-            const role = await AsyncStorage.getItem('role');
-            setUserRole(role);
-        };
-        fetchUserRole();
-    }, []);
 
     // Fetch hive details
     const fetchHiveDetails = () => {
         console.log(`Fetching hive details for hiveNo: ${hiveNo}`);
-        axios.get(`http://10.0.2.2:3000/hive-details?hiveNo=${hiveNo}`) // Use the correct IP address
+        axios.get(`http://10.0.2.2:3000/hive-details?hiveNo=${hiveNo}`)
             .then(response => {
                 console.log('Response received:', response.data);
                 if (response.data.success) {
@@ -78,7 +67,7 @@ const Hive = () => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://10.0.2.2:5000/hive-details?hiveNo=${hiveNo}`)
+                    axios.delete(`http://10.0.2.2:3000/hive-details?hiveNo=${hiveNo}`)
                         .then(() => {
                             setMessage(`Hive #${hiveNo} has been deleted.`);
                             setHive(null);
@@ -138,7 +127,7 @@ const Hive = () => {
     };
 
     const handleCreate = () => {
-        axios.post('http://10.0.2.2:5000/hive-details', newHive)
+        axios.post('http://10.0.2.2:3000/hive-details', newHive)
             .then(() => {
                 setMessage(`Hive #${newHive.hiveNo} has been created.`);
                 setIsCreating(false);
@@ -164,8 +153,8 @@ const Hive = () => {
                 />
                 <Button title="Search" onPress={handleSearch} />
                 <Button title="Clear" onPress={handleClear} />
-                {userRole === 'Admin' && (
-                    <Button title={isCreating ? 'Cancel' : 'Create Hive'} onPress={handleCreateToggle} />
+                {!isCreating && (
+                    <Button title="Create Hive" onPress={handleCreateToggle} />
                 )}
             </View>
 
@@ -181,25 +170,102 @@ const Hive = () => {
                     <Text style={styles.hiveText}>Expected Harvest Date: {new Date(hive.expectedHarvestDate).toLocaleDateString()}</Text>
                     <Text style={styles.hiveText}>Honey Level: {hive.honeyLevel}</Text>
 
-                    {userRole === 'Admin' && (
-                        <>
-                            <Button title="Delete Hive" onPress={handleDelete} />
-                            <Button title="Edit Hive" onPress={handleEditToggle} />
-                        </>
-                    )}
+                    <View style={styles.actionButtons}>
+                        <Button title="Edit Hive" onPress={handleEditToggle} />
+                        <Button title="Delete Hive" onPress={handleDelete} />
+                    </View>
                 </View>
             )}
 
             {isEditing && (
                 <View style={styles.hiveCard}>
                     <Text style={styles.hiveTitle}>Edit Hive #{editData.hiveNo}</Text>
-                    {/* Add Input fields for Editing */}
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Humidity"
+                        value={editData.humidity}
+                        onChangeText={(value) => handleEditInputChange('humidity', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Temperature"
+                        value={editData.temperature}
+                        onChangeText={(value) => handleEditInputChange('temperature', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Bee In/Out"
+                        value={editData.beeInOut}
+                        onChangeText={(value) => handleEditInputChange('beeInOut', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Raindrops"
+                        value={editData.raindrops}
+                        onChangeText={(value) => handleEditInputChange('raindrops', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Expected Harvest Date (YYYY-MM-DD)"
+                        value={editData.expectedHarvestDate}
+                        onChangeText={(value) => handleEditInputChange('expectedHarvestDate', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Honey Level"
+                        value={editData.honeyLevel}
+                        onChangeText={(value) => handleEditInputChange('honeyLevel', value)}
+                    />
+                    <Button title="Update Hive" onPress={handleUpdate} />
                 </View>
             )}
 
-            {isCreating && userRole === 'Admin' && (
+            {isCreating && (
                 <View style={styles.hiveCard}>
-                    {/* Add Input fields for Creating */}
+                    <Text style={styles.hiveTitle}>Create New Hive</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Hive Number"
+                        value={newHive.hiveNo}
+                        onChangeText={(value) => handleCreateInputChange('hiveNo', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Humidity"
+                        value={newHive.humidity}
+                        onChangeText={(value) => handleCreateInputChange('humidity', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Temperature"
+                        value={newHive.temperature}
+                        onChangeText={(value) => handleCreateInputChange('temperature', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Bee In/Out"
+                        value={newHive.beeInOut}
+                        onChangeText={(value) => handleCreateInputChange('beeInOut', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Raindrops"
+                        value={newHive.raindrops}
+                        onChangeText={(value) => handleCreateInputChange('raindrops', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Expected Harvest Date (YYYY-MM-DD)"
+                        value={newHive.expectedHarvestDate}
+                        onChangeText={(value) => handleCreateInputChange('expectedHarvestDate', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Honey Level"
+                        value={newHive.honeyLevel}
+                        onChangeText={(value) => handleCreateInputChange('honeyLevel', value)}
+                    />
+                    <Button title="Create Hive" onPress={handleCreate} />
                 </View>
             )}
         </ScrollView>
@@ -208,52 +274,56 @@ const Hive = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 16,
         backgroundColor: '#000',
     },
     title: {
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
-        color: '#fff',
+        marginBottom: 20,
         textAlign: 'center',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
     searchBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 16,
-        alignItems: 'center',
+        marginBottom: 20,
     },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 8,
+        padding: 10,
         flex: 1,
-        marginRight: 8,
-        color: '#fff', // Ensures text inside TextInput is visible
-    },
-    message: {
-        color: 'red',
-        marginBottom: 16,
+        marginRight: 10,
+        backgroundColor: '#000',
     },
     hiveCard: {
-        backgroundColor: '#333', // Ensure card background contrasts with text
-        padding: 16,
-        borderRadius: 8,
-        marginBottom: 16,
-        elevation: 3,
+        padding: 20,
+        backgroundColor: '#010101',
+        marginBottom: 20,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
     },
     hiveTitle: {
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 8,
-        color: '#fff',
+        marginBottom: 10,
     },
     hiveText: {
-        color: '#fff', // Ensure text color is white for visibility
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    actionButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    message: {
+        fontSize: 16,
+        color: 'red',
+        marginBottom: 20,
+        textAlign: 'center',
     },
 });
 

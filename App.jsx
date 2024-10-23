@@ -12,7 +12,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name="Home" 
           component={Home} 
           options={{ headerShown: false }} // Hides the header if not needed
@@ -32,7 +32,7 @@ const App = () => {
           name="Boxcode" 
           component={Boxcode} 
           options={{ headerShown: false }} 
-        />
+        /> */}
 
 <Stack.Screen 
           name="Hive" 
