@@ -14,7 +14,7 @@ const Menu = ({ navigation }) => {
             Monitor your hives' health and productivity in real-time with IoT Technology
           </Text>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sinhala')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
             <Text style={styles.buttonText}>Get started</Text>
           </TouchableOpacity>
         </View>

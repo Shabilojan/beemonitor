@@ -212,15 +212,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
     },
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 16,
         color: '#fff',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10,
     },
     searchBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 16,
+        alignItems: 'center',
     },
     input: {
         borderWidth: 1,
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     hiveTitle: {
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 8,
         color: '#fff',

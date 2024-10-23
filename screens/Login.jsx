@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.111.173:3000/login', {
+      const response = await axios.post('http://10.0.2.2:3000/login', {
         username,
         password,
       });
@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
       if (response.data.success) {
         Alert.alert('Login Successful', 'Welcome!');
         // Navigate to another screen or set user context here
-        navigation.navigate('Home'); // Replace 'Home' with your target screen
+        navigation.navigate('Hive'); // Replace 'Home' with your target screen
       } else {
         Alert.alert('Login Failed', response.data.message);
       }
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+    backgroundColor:'#000',
   },
   title: {
     fontSize: 24,
