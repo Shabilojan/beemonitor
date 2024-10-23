@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const User = () => {
@@ -21,7 +21,6 @@ const User = () => {
         console.log(`Fetching user details for userId: ${userId}`);
         axios.get(`http://10.0.2.2:3000/user-details?userId=${userId}`)
             .then(response => {
-                console.log('Response received:', response.data);
                 if (response.data.success) {
                     setUser(response.data.data);
                     setEditData(response.data.data);
@@ -31,8 +30,7 @@ const User = () => {
                     setMessage('No user details found.');
                 }
             })
-            .catch(error => {
-                console.log('Error fetching user details:', error);
+            .catch(() => {
                 setUser(null);
                 setMessage('Error fetching user details');
             });
@@ -143,10 +141,16 @@ const User = () => {
                     value={userId}
                     onChangeText={setUserId}
                 />
-                <Button title="Search" onPress={handleSearch} />
-                <Button title="Clear" onPress={handleClear} />
+                <TouchableOpacity style={styles.button} onPress={handleSearch}>
+                    <Text style={styles.buttonText}>Search</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleClear}>
+                    <Text style={styles.buttonText}>Clear</Text>
+                </TouchableOpacity>
                 {!isCreating && (
-                    <Button title="Create User" onPress={handleCreateToggle} />
+                    <TouchableOpacity style={styles.button} onPress={handleCreateToggle}>
+                        <Text style={styles.buttonText}>Create User</Text>
+                    </TouchableOpacity>
                 )}
             </View>
 
@@ -160,8 +164,12 @@ const User = () => {
                     <Text style={styles.userText}>Role: {user.role}</Text>
 
                     <View style={styles.actionButtons}>
-                        <Button title="Edit User" onPress={handleEditToggle} />
-                        <Button title="Delete User" onPress={handleDelete} />
+                        <TouchableOpacity style={styles.button} onPress={handleEditToggle}>
+                            <Text style={styles.buttonText}>Edit User</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={handleDelete}>
+                            <Text style={styles.buttonText}>Delete User</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )}
@@ -187,7 +195,9 @@ const User = () => {
                         value={editData.role}
                         onChangeText={(value) => handleEditInputChange('role', value)}
                     />
-                    <Button title="Update User" onPress={handleUpdate} />
+                    <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+                        <Text style={styles.buttonText}>Update User</Text>
+                    </TouchableOpacity>
                 </View>
             )}
 
@@ -212,7 +222,9 @@ const User = () => {
                         value={newUser.role}
                         onChangeText={(value) => handleCreateInputChange('role', value)}
                     />
-                    <Button title="Create User" onPress={handleCreate} />
+                    <TouchableOpacity style={styles.button} onPress={handleCreate}>
+                        <Text style={styles.buttonText}>Create User</Text>
+                    </TouchableOpacity>
                 </View>
             )}
         </ScrollView>
@@ -230,6 +242,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
+        color: '#fff',
     },
     searchBar: {
         flexDirection: 'row',
@@ -243,10 +256,23 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: 10,
         backgroundColor: '#000',
+        color: '#fff',
+    },
+    button: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
     userCard: {
         padding: 20,
-        backgroundColor: '#010101',
+        backgroundColor: '#333',
         marginBottom: 20,
         borderRadius: 10,
         borderWidth: 1,
@@ -256,10 +282,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '#fff',
     },
     userText: {
         fontSize: 16,
         marginBottom: 5,
+        color: '#fff',
     },
     actionButtons: {
         flexDirection: 'row',
@@ -269,8 +297,7 @@ const styles = StyleSheet.create({
     message: {
         fontSize: 16,
         color: 'red',
-        marginBottom: 20,
-        textAlign: 'center',
+        marginBottom: 10,
     },
 });
 

@@ -106,15 +106,76 @@ app.delete('/hive-details', (req, res) => {
     });
 });
 
+// Get user details by ID
+app.get('/user-details', (req, res) => {
+  const { userId } = req.query;
+  const query = 'SELECT * FROM users WHERE userId = ?';
+  db.query(query, [userId], (err, result) => {
+      if (err) {
+          res.json({ success: false, message: 'Error fetching user details' });
+      } else if (result.length > 0) {
+          res.json({ success: true, data: result[0] });
+      } else {
+          res.json({ success: false, message: 'No user details found' });
+      }
+  });
+});
 
+app.get('/user-details', (req, res) => {
+  const userId = req.query.userId;
+  db.query('SELECT * FROM users WHERE userId = ?', [userId], (err, results) => {
+      if (err) {
+          return res.status(500).json({ success: false, message: 'Database error', error: err });
+      }
+      if (results.length > 0) {
+          return res.status(200).json({ success: true, data: results[0] });
+      }
+      return res.status(404).json({ success: false, message: 'User not found' });
+  });
+});
 
+// Endpoint to create a new user
+app.post('/user-details', (req, res) => {
+  const { username, email, role } = req.body;
+  const newUser = { username, email, role };
 
+  db.query('INSERT INTO users SET ?', newUser, (err, results) => {
+      if (err) {
+          return res.status(500).json({ success: false, message: 'Database error', error: err });
+      }
+      return res.status(201).json({ success: true, message: 'User created', userId: results.insertId });
+  });
+});
 
+// Endpoint to update user details
+app.put('/user-details', (req, res) => {
+  const { userId, username, email, role } = req.body;
 
+  db.query('UPDATE users SET username = ?, email = ?, role = ? WHERE userId = ?', [username, email, role, userId], (err, results) => {
+      if (err) {
+          return res.status(500).json({ success: false, message: 'Database error', error: err });
+      }
+      if (results.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      return res.status(200).json({ success: true, message: 'User updated' });
+  });
+});
 
+// Endpoint to delete a user
+app.delete('/user-details', (req, res) => {
+  const userId = req.query.userId;
 
-
-
+  db.query('DELETE FROM users WHERE userId = ?', [userId], (err, results) => {
+      if (err) {
+          return res.status(500).json({ success: false, message: 'Database error', error: err });
+      }
+      if (results.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      return res.status(200).json({ success: true, message: 'User deleted' });
+  });
+});
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
