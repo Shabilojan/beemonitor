@@ -46,7 +46,8 @@ app.post('/login', (req, res) => {
 // Routes for hive details
 
 // Get hive details
-app.get('/hive', (req, res) => {
+app.get('/hive-details', (req, res) => {
+    console.log('get hive dtails')
   const { hiveNo } = req.query;
 
   if (!hiveNo) {
@@ -60,7 +61,7 @@ app.get('/hive', (req, res) => {
           console.error('Database error:', error);  // Log the exact error for debugging
           return res.status(500).json({ success: false, message: 'Database error' });
       }
-
+      console.log(results)
       if (results.length > 0) {
           return res.json({ success: true, data: results[0] });
       } else {
@@ -109,9 +110,10 @@ app.delete('/hive-details', (req, res) => {
 // Get user details by ID
 app.get('/user-details', (req, res) => {
   const { userId } = req.query;
-  const query = 'SELECT * FROM users WHERE userId = ?';
+  const query = 'SELECT * FROM users WHERE id = ?';
   db.query(query, [userId], (err, result) => {
       if (err) {
+         console.log(err.message)
           res.json({ success: false, message: 'Error fetching user details' });
       } else if (result.length > 0) {
           res.json({ success: true, data: result[0] });
@@ -121,18 +123,18 @@ app.get('/user-details', (req, res) => {
   });
 });
 
-app.get('/user-details', (req, res) => {
-  const userId = req.query.userId;
-  db.query('SELECT * FROM users WHERE userId = ?', [userId], (err, results) => {
-      if (err) {
-          return res.status(500).json({ success: false, message: 'Database error', error: err });
-      }
-      if (results.length > 0) {
-          return res.status(200).json({ success: true, data: results[0] });
-      }
-      return res.status(404).json({ success: false, message: 'User not found' });
-  });
-});
+// app.get('/user-details', (req, res) => {
+//   const userId = req.query.userId;
+//   db.query('SELECT * FROM users WHERE userId = ?', [userId], (err, results) => {
+//       if (err) {
+//           return res.status(500).json({ success: false, message: 'Database error', error: err });
+//       }
+//       if (results.length > 0) {
+//           return res.status(200).json({ success: true, data: results[0] });
+//       }
+//       return res.status(404).json({ success: false, message: 'User not found' });
+//   });
+// });
 
 // Endpoint to create a new user
 app.post('/user-details', (req, res) => {
