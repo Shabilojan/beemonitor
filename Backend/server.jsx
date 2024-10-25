@@ -123,18 +123,6 @@ app.get('/user-details', (req, res) => {
   });
 });
 
-// app.get('/user-details', (req, res) => {
-//   const userId = req.query.userId;
-//   db.query('SELECT * FROM users WHERE userId = ?', [userId], (err, results) => {
-//       if (err) {
-//           return res.status(500).json({ success: false, message: 'Database error', error: err });
-//       }
-//       if (results.length > 0) {
-//           return res.status(200).json({ success: true, data: results[0] });
-//       }
-//       return res.status(404).json({ success: false, message: 'User not found' });
-//   });
-// });
 
 // Endpoint to create a new user
 app.post('/user-details', (req, res) => {
@@ -153,7 +141,7 @@ app.post('/user-details', (req, res) => {
 app.put('/user-details', (req, res) => {
   const { userId, username, email, role } = req.body;
 
-  db.query('UPDATE users SET username = ?, email = ?, role = ? WHERE userId = ?', [username, email, role, userId], (err, results) => {
+  db.query('UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?', [username, email, role, userId], (err, results) => {
       if (err) {
           return res.status(500).json({ success: false, message: 'Database error', error: err });
       }

@@ -11,15 +11,18 @@ const User = () => {
     const [editData, setEditData] = useState({});
     const [isCreating, setIsCreating] = useState(false);
     const [newUser, setNewUser] = useState({
-        username: '',
+        name: '',
         email: '',
+        phoneNumber: '',
+        password: '',
+        profilePicture: '',
+        username: '',
         role: '',
     });
 
     // Fetch user details
     const fetchUserDetails = () => {
-        console.log(`Fetching user details for userId: ${userId}`);
-        axios.get(`http://10.0.2.2:3000/user-details?userId=${userId}`)
+        axios.get(`http://10.0.2.2:5000/user-details/${userId}`)
             .then(response => {
                 if (response.data.success) {
                     setUser(response.data.data);
@@ -30,7 +33,7 @@ const User = () => {
                     setMessage('No user details found.');
                 }
             })
-            .catch(() => {
+            .catch(error => {
                 setUser(null);
                 setMessage('Error fetching user details');
             });
@@ -61,13 +64,10 @@ const User = () => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://10.0.2.2:3000/user-details?userId=${userId}`)
+                    axios.delete(`http://10.0.2.2:5000/user-details/${userId}`)
                         .then(() => {
                             setMessage(`User #${userId} has been deleted.`);
-                            setUser(null);
-                            setSearched(false);
-                            setUserId('');
-                            setIsEditing(false);
+                            handleClear();
                         })
                         .catch(() => {
                             setMessage('Failed to delete user.');
@@ -89,11 +89,11 @@ const User = () => {
     };
 
     const handleUpdate = () => {
-        axios.put(`http://10.0.2.2:3000/user-details`, editData)
+        axios.put(`http://10.0.2.2:5000/user-details/${userId}`, editData)
             .then(() => {
-                setMessage(`User #${editData.userId} has been updated.`);
-                setIsEditing(false);
+                setMessage(`User #${userId} has been updated.`);
                 fetchUserDetails();
+                setIsEditing(false);
             })
             .catch(() => {
                 setMessage('Failed to update user.');
@@ -103,8 +103,12 @@ const User = () => {
     const handleCreateToggle = () => {
         setIsCreating(!isCreating);
         setNewUser({
-            username: '',
+            name: '',
             email: '',
+            phoneNumber: '',
+            password: '',
+            profilePicture: '',
+            username: '',
             role: '',
         });
     };
@@ -117,12 +121,11 @@ const User = () => {
     };
 
     const handleCreate = () => {
-        axios.post('http://10.0.2.2:3000/user-details', newUser)
+        axios.post(`http://10.0.2.2:5000/user-details`, newUser)
             .then(() => {
-                setMessage(`User #${newUser.username} has been created.`);
+                setMessage(`User ${newUser.username} has been created.`);
                 setIsCreating(false);
-                setUser(null);
-                setUserId('');
+                handleClear();
             })
             .catch(() => {
                 setMessage('Failed to create user.');
@@ -204,17 +207,44 @@ const User = () => {
             {isCreating && (
                 <View style={styles.userCard}>
                     <Text style={styles.userTitle}>Create New User</Text>
+
                     <TextInput
                         style={styles.input}
-                        placeholder="Username"
-                        value={newUser.username}
-                        onChangeText={(value) => handleCreateInputChange('username', value)}
+                        placeholder="Name"
+                        value={newUser.name}
+                        onChangeText={(value) => handleCreateInputChange('name', value)}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Email"
                         value={newUser.email}
                         onChangeText={(value) => handleCreateInputChange('email', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Phone Number"
+                        value={newUser.phoneNumber}
+                        keyboardType="phone-pad"
+                        onChangeText={(value) => handleCreateInputChange('phoneNumber', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        value={newUser.password}
+                        onChangeText={(value) => handleCreateInputChange('password', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Profile Picture URL"
+                        value={newUser.profilePicture}
+                        onChangeText={(value) => handleCreateInputChange('profilePicture', value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Username"
+                        value={newUser.username}
+                        onChangeText={(value) => handleCreateInputChange('username', value)}
                     />
                     <TextInput
                         style={styles.input}
@@ -274,12 +304,10 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#333',
         marginBottom: 20,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
+        borderRadius: 5,
     },
     userTitle: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
         color: '#fff',
@@ -295,9 +323,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     message: {
-        fontSize: 16,
-        color: 'red',
-        marginBottom: 10,
+        color: '#fff',
+        textAlign: 'center',
+        marginBottom: 20,
     },
 });
 
