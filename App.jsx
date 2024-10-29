@@ -7,6 +7,7 @@ import Menu from './screens/Menu';
 import Boxcode from './screens/Boxcode';
 import Welcome from './screens/Welcome';
 import User from './screens/User';
+import Hivedetails from './screens/Hivedetails';
 
 const Stack = createStackNavigator();
 
@@ -29,23 +30,30 @@ const App = () => {
           component={Login} 
           options={{ headerShown: false }} 
         />
-       
-        <Stack.Screen 
-          name="Boxcode" 
+
+<Stack.Screen 
+          name="Hivedetails" 
+          component={Hivedetails} 
+           
+        />
+
+<Stack.Screen 
+          name="Hive" 
+          component={Hive} 
+        
+        />
+
+<Stack.Screen 
+          name="Bocxode" 
           component={Boxcode} 
           options={{ headerShown: false }} 
         />
 
-{/* <Stack.Screen 
-          name="Hive" 
-          component={Hive} 
-          options={{ headerShown: false }} 
-        />
         <Stack.Screen 
           name="Welcome" 
           component={Welcome} 
           options={{ headerShown: false }} 
-        /> */}
+        />
 
 <Stack.Screen 
           name="User" 

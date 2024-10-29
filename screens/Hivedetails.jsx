@@ -11,20 +11,20 @@ const Hivedetails = ({ navigation }) => {
                 <Text style={styles.title}>Choose your way to check...</Text>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('')}
+                    onPress={() =>  navigation.navigate('Hive')}// Corrected to navigate to 'Hive'
                 >
                     <Text style={styles.buttonText}>Enter the box code</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('')}
+                    onPress={() => navigation.navigate('Hive')} // Adjust if necessary, currently navigates to 'Hive'
                 >
                     <Text style={styles.buttonText}>Scan QR code</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.footer}>
-                <TouchableOpacity onPress={() => navigation.navigate('HiveScreen')} style={styles.footerItem}>
+                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
                     <Image source={require('../assets/Vector.png')} style={styles.icon} />
                     <Text style={styles.footerText}>HIVE</Text>
                 </TouchableOpacity>
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        
     },
     container: {
         flex: 1,
@@ -145,4 +144,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Hive;
+export default Hivedetails;

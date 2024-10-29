@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
       if (response.data.success) {
         Alert.alert('Login Successful', 'Welcome!');
         // Navigate to another screen or set user context here
-        navigation.navigate('Hive'); // Replace 'Home' with your target screen
+        navigation.navigate('Hivedetails'); // Replace 'Home' with your target screen
       } else {
         Alert.alert('Login Failed', response.data.message);
       }
