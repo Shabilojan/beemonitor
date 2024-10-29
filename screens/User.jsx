@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import axios from 'axios';
 
-const User = () => {
+const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState('');
     const [searched, setSearched] = useState(false);
@@ -133,200 +133,273 @@ const User = () => {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.title}>User Details</Text>
+        <ImageBackground 
+            source={require('../assets/Bg-02.png')} // Add your background image here
+            style={styles.background}
+        >
+            <ScrollView style={styles.container}>
+                <Text style={styles.title}>User Details</Text>
 
-            <View style={styles.searchBar}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter User ID"
-                    keyboardType="numeric"
-                    value={userId}
-                    onChangeText={setUserId}
-                />
-                <TouchableOpacity style={styles.button} onPress={handleSearch}>
-                    <Text style={styles.buttonText}>Search</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={handleClear}>
-                    <Text style={styles.buttonText}>Clear</Text>
-                </TouchableOpacity>
-                {!isCreating && (
-                    <TouchableOpacity style={styles.button} onPress={handleCreateToggle}>
-                        <Text style={styles.buttonText}>Create User</Text>
+                <View style={styles.searchBar}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter User ID"
+                        keyboardType="numeric"
+                        value={userId}
+                        onChangeText={setUserId}
+                    />
+                    <TouchableOpacity style={styles.button} onPress={handleSearch}>
+                        <Text style={styles.buttonText}>Search</Text>
                     </TouchableOpacity>
-                )}
-            </View>
-
-            {message ? <Text style={styles.message}>{message}</Text> : null}
-
-            {searched && user && !isEditing && (
-                <View style={styles.userCard}>
-                    <Text style={styles.userTitle}>User #{user.userId}</Text>
-                    <Text style={styles.userText}>Username: {user.username}</Text>
-                    <Text style={styles.userText}>Email: {user.email}</Text>
-                    <Text style={styles.userText}>Role: {user.role}</Text>
-
-                    <View style={styles.actionButtons}>
-                        <TouchableOpacity style={styles.button} onPress={handleEditToggle}>
-                            <Text style={styles.buttonText}>Edit User</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleClear}>
+                        <Text style={styles.buttonText}>Clear</Text>
+                    </TouchableOpacity>
+                    {!isCreating && (
+                        <TouchableOpacity style={styles.button} onPress={handleCreateToggle}>
+                            <Text style={styles.buttonText}>Create User</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={handleDelete}>
-                            <Text style={styles.buttonText}>Delete User</Text>
+                    )}
+                </View>
+
+                {message ? <Text style={styles.message}>{message}</Text> : null}
+
+                {searched && user && !isEditing && (
+                    <View style={styles.userCard}>
+                        <Text style={styles.userTitle}>User #{user.userId}</Text>
+                        <Text style={styles.userText}>Username: {user.username}</Text>
+                        <Text style={styles.userText}>Email: {user.email}</Text>
+                        <Text style={styles.userText}>Role: {user.role}</Text>
+
+                        <View style={styles.button}>
+                            <TouchableOpacity style={styles.button} onPress={handleEditToggle}>
+                                <Text style={styles.buttonText}>Edit User</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button} onPress={handleDelete}>
+                                <Text style={styles.buttonText}>Delete User</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
+
+                {isEditing && (
+                    <View style={styles.userCard}>
+                        <Text style={styles.userTitle}>Edit User #{editData.userId}</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            value={editData.username}
+                            onChangeText={(value) => handleEditInputChange('username', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            value={editData.email}
+                            onChangeText={(value) => handleEditInputChange('email', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Role"
+                            value={editData.role}
+                            onChangeText={(value) => handleEditInputChange('role', value)}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+                            <Text style={styles.buttonText}>Update User</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-            )}
+                )}
 
-            {isEditing && (
-                <View style={styles.userCard}>
-                    <Text style={styles.userTitle}>Edit User #{editData.userId}</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Username"
-                        value={editData.username}
-                        onChangeText={(value) => handleEditInputChange('username', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        value={editData.email}
-                        onChangeText={(value) => handleEditInputChange('email', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Role"
-                        value={editData.role}
-                        onChangeText={(value) => handleEditInputChange('role', value)}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                        <Text style={styles.buttonText}>Update User</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+                {isCreating && (
+                    <View style={styles.userCard}>
+                        <Text style={styles.userTitle}>Create New User</Text>
 
-            {isCreating && (
-                <View style={styles.userCard}>
-                    <Text style={styles.userTitle}>Create New User</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Name"
+                            value={newUser.name}
+                            onChangeText={(value) => handleCreateInputChange('name', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            value={newUser.email}
+                            onChangeText={(value) => handleCreateInputChange('email', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone Number"
+                            value={newUser.phoneNumber}
+                            keyboardType="phone-pad"
+                            onChangeText={(value) => handleCreateInputChange('phoneNumber', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            secureTextEntry={true}
+                            value={newUser.password}
+                            onChangeText={(value) => handleCreateInputChange('password', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Profile Picture URL"
+                            value={newUser.profilePicture}
+                            onChangeText={(value) => handleCreateInputChange('profilePicture', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            value={newUser.username}
+                            onChangeText={(value) => handleCreateInputChange('username', value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Role"
+                            value={newUser.role}
+                            onChangeText={(value) => handleCreateInputChange('role', value)}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+                            <Text style={styles.buttonText}>Create User</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </ScrollView>
+            <View style={styles.footer}>
+                <Text style={styles.footerText}>© 2024 Your Company Name</Text>
+            </View>
+            <View style={styles.footer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
+                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>HIVE</Text>
+                </TouchableOpacity>
 
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Name"
-                        value={newUser.name}
-                        onChangeText={(value) => handleCreateInputChange('name', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        value={newUser.email}
-                        onChangeText={(value) => handleCreateInputChange('email', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone Number"
-                        value={newUser.phoneNumber}
-                        keyboardType="phone-pad"
-                        onChangeText={(value) => handleCreateInputChange('phoneNumber', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        value={newUser.password}
-                        onChangeText={(value) => handleCreateInputChange('password', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Profile Picture URL"
-                        value={newUser.profilePicture}
-                        onChangeText={(value) => handleCreateInputChange('profilePicture', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Username"
-                        value={newUser.username}
-                        onChangeText={(value) => handleCreateInputChange('username', value)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Role"
-                        value={newUser.role}
-                        onChangeText={(value) => handleCreateInputChange('role', value)}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={handleCreate}>
-                        <Text style={styles.buttonText}>Create User</Text>
-                    </TouchableOpacity>
+                <View style={styles.iconWrapper}>
+                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
+                    <Text style={styles.centeredText}>Dashboard</Text>
                 </View>
-            )}
-        </ScrollView>
+
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
+                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>HONEY BAR</Text>
+                </TouchableOpacity>
+            </View>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    background: {
         flex: 1,
-        padding: 16,
-        backgroundColor: '#000',
+        justifyContent: 'center',
+    },
+    container: {
+        padding: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'center',
-        color: '#fff',
     },
     searchBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: 'column',
+        alignItems: 'center', // Center align the items
         marginBottom: 20,
     },
     input: {
+        width: '80%', // Adjust width to fit the screen
+        padding: 10,
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 10,
-        flex: 1,
-        marginRight: 10,
-        backgroundColor: '#000',
-        color: '#fff',
+        borderRadius: 5,
+        marginBottom: 10,
     },
     button: {
-        backgroundColor: '#007BFF',
+        backgroundColor: '#4CAF50',
         padding: 10,
         borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
+        width: '80%', // Adjust width to fit the screen
+        marginBottom: 10,
     },
     buttonText: {
         color: '#fff',
-        fontWeight: 'bold',
+        textAlign: 'center',
     },
     userCard: {
-        padding: 20,
-        backgroundColor: '#333',
-        marginBottom: 20,
+        backgroundColor: '#fff',
         borderRadius: 5,
+        padding: 15,
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.5,
     },
     userTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#fff',
     },
     userText: {
         fontSize: 16,
         marginBottom: 5,
-        color: '#fff',
-    },
-    actionButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10,
     },
     message: {
-        color: '#fff',
-        textAlign: 'center',
-        marginBottom: 20,
+        color: 'red',
+        marginBottom: 15,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#ffd54f',
+        width: '100%',
+        height: 80,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: -2,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+        position: 'absolute',
+        bottom: 0,
+        paddingHorizontal: 40,
+    },
+    footerItem: {
+        alignItems: 'center',
+    },
+    icon: {
+        width: 35,
+        height: 35,
+    },
+    roundIcon: {
+        marginHorizontal: 170,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: '#000',
+        marginBottom: 12,
+        backgroundColor: '#ffd54f',
+    },
+    iconWrapper: {
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 10,
+        justifyContent: 'center',
+    },
+    centeredText: {
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
+        marginTop: 2,
+    },
+    footerText: {
+        marginTop: 5,
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
     },
 });
-
 export default User;

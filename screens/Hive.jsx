@@ -293,28 +293,6 @@ const Hive = ({ navigation }) => {
                         </View>
                     )}
                 </ScrollView>
-
-                {/* Footer */}
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>© 2024 Your Company Name</Text>
-                </View>
-            </View>
-
-            <View style={styles.footer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
-                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>HIVE</Text>
-                </TouchableOpacity>
-                
-                <View style={styles.iconWrapper}>
-                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
-                    <Text style={styles.centeredText}>Dashboard</Text>
-                </View>
-                
-                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
-                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>Honey Bar</Text>
-                </TouchableOpacity>
             </View>
         </ImageBackground>
     );
@@ -323,47 +301,45 @@ const Hive = ({ navigation }) => {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        resizeMode: 'cover',
         justifyContent: 'center',
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-
+        padding: 20,
     },
     scrollContainer: {
-        alignItems: 'center',
-        paddingVertical: 20,
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingBottom: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+        textAlign: 'center',
     },
     searchContainer: {
-        marginBottom: 15,
+        marginBottom: 20,
     },
     input: {
-        width: 300,
-        padding: 10,
-        borderWidth: 3,
-        borderColor: '#000',
+        borderWidth: 1,
+        borderColor: '#ccc',
         borderRadius: 5,
-        marginBottom: 15,
+        padding: 10,
+        marginBottom: 10,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%',
+        marginBottom: 20,
     },
     button: {
-        backgroundColor: '#ffcc80',
-        padding: 15,
+        backgroundColor: '#4CAF50',
+        padding: 10,
         borderRadius: 5,
-        alignItems: 'center',
         flex: 1,
         marginHorizontal: 5,
+        alignItems: 'center',
     },
     buttonText: {
         color: '#fff',
@@ -371,15 +347,15 @@ const styles = StyleSheet.create({
     },
     message: {
         color: 'red',
-        marginBottom: 10,
+        textAlign: 'center',
+        marginBottom: 20,
     },
     hiveCard: {
-        backgroundColor: '#fff',
         padding: 20,
-        borderRadius: 8,
-        elevation: 3,
-        marginVertical: 10,
-        width: '100%',
+        backgroundColor: '#A9A9A9',
+        borderRadius: 15,
+        elevation: 2,
+        marginBottom: 20,
     },
     hiveTitle: {
         fontSize: 20,
@@ -387,63 +363,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     hiveText: {
-        fontSize: 16,
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#ffd54f',
-        width: '100%',
-        height: 80,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: -2,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 40,
-    },
-    footerItem: {
-        alignItems: 'center',
-    },
-    icon: {
-        width: 35,
-        height: 35,
-    },
-    roundIcon: {
-        marginHorizontal: 170,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderWidth: 2,
-        borderColor: '#000',
-        marginBottom: 12,
-        backgroundColor: '#ffd54f',
-    },
-    iconWrapper: {
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 10,
-        justifyContent: 'center',
-    },
-    centeredText: {
-        fontSize: 14,
-        color: '#000',
-        fontWeight: 'bold',
-        marginTop: 2,
-    },
-    footerText: {
-        marginTop: 5,
-        fontSize: 14,
-        color: '#000',
-        fontWeight: 'bold',
+        color:'#000',
+        marginBottom: 5,
     },
 });
 

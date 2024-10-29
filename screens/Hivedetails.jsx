@@ -17,7 +17,7 @@ const Hivedetails = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('Hive')} // Adjust if necessary, currently navigates to 'Hive'
+                    onPress={() => navigation.navigate('User')} // Adjust if necessary, currently navigates to 'Hive'
                 >
                     <Text style={styles.buttonText}>Scan QR code</Text>
                 </TouchableOpacity>
