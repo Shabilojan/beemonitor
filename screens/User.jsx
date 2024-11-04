@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import axios from 'axios';
 
-const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
+const User = ({ navigation }) => {  
     const [user, setUser] = useState(null);
-    const [userId, setUserId] = useState('');
+    const [username, setusername] = useState('');
     const [searched, setSearched] = useState(false);
     const [message, setMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -22,7 +22,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
 
     // Fetch user details
     const fetchUserDetails = () => {
-        axios.get(`http://10.0.2.2:5000/user-details/${userId}`)
+        axios.get(`http://10.0.2.2:5000/user-details/${username}`)
             .then(response => {
                 if (response.data.success) {
                     setUser(response.data.data);
@@ -40,7 +40,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
     };
 
     const handleSearch = () => {
-        if (userId) {
+        if (username) {
             setSearched(true);
             fetchUserDetails();
         }
@@ -48,7 +48,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
 
     const handleClear = () => {
         setUser(null);
-        setUserId('');
+        setusername('');
         setSearched(false);
         setMessage('');
         setIsEditing(false);
@@ -56,7 +56,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
     };
 
     const handleDelete = () => {
-        Alert.alert('Delete Confirmation', `Are you sure you want to delete User #${userId}?`, [
+        Alert.alert('Delete Confirmation', `Are you sure you want to delete User #${username}?`, [
             {
                 text: 'Cancel',
                 style: 'cancel',
@@ -64,9 +64,9 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://10.0.2.2:5000/user-details/${userId}`)
+                    axios.delete(`http://10.0.2.2:5000/user-details/${username}`)
                         .then(() => {
-                            setMessage(`User #${userId} has been deleted.`);
+                            setMessage(`User #${username} has been deleted.`);
                             handleClear();
                         })
                         .catch(() => {
@@ -89,7 +89,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
     };
 
     const handleUpdate = () => {
-        axios.put(`http://10.0.2.2:5000/user-details/${userId}`, editData)
+        axios.put(`http://10.0.2.2:5000/user-details/${username}`, editData)
             .then(() => {
                 setMessage(`User #${userId} has been updated.`);
                 fetchUserDetails();
@@ -120,7 +120,28 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
         }));
     };
 
+    const validateInputs = () => {
+        const { name, email, phoneNumber, password, username, role } = newUser;
+        const phoneRegex = /^[0-9]{10}$/;
+        const usernameRegex = /^[a-zA-Z0-9]{8,10}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (name.length > 30) return "Name must be within 30 characters.";
+        if (!usernameRegex.test(username)) return "Username must be 8-10 characters long.";
+        if (!phoneRegex.test(phoneNumber)) return "Phone number must be exactly 10 digits.";
+        if (!passwordRegex.test(password)) return "Password must include uppercase, lowercase, number, and special character.";
+        if (!['admin', 'user'].includes(role)) return "Role must be 'admin' or 'user'.";
+
+        return null;
+    };
+
     const handleCreate = () => {
+        const validationError = validateInputs();
+        if (validationError) {
+            setMessage(validationError);
+            return;
+        }
+
         axios.post(`http://10.0.2.2:5000/user-details`, newUser)
             .then(() => {
                 setMessage(`User ${newUser.username} has been created.`);
@@ -145,8 +166,8 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
                         style={styles.input}
                         placeholder="Enter User ID"
                         keyboardType="numeric"
-                        value={userId}
-                        onChangeText={setUserId}
+                        value={username}
+                        onChangeText={setusername}
                     />
                     <TouchableOpacity style={styles.button} onPress={handleSearch}>
                         <Text style={styles.buttonText}>Search</Text>
@@ -229,6 +250,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
                             placeholder="Phone Number"
                             value={newUser.phoneNumber}
                             keyboardType="phone-pad"
+                            maxLength={10} // Enforce max length for phone number
                             onChangeText={(value) => handleCreateInputChange('phoneNumber', value)}
                         />
                         <TextInput
@@ -237,6 +259,7 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
                             secureTextEntry={true}
                             value={newUser.password}
                             onChangeText={(value) => handleCreateInputChange('password', value)}
+                            maxLength={8} // Enforce max length for password
                         />
                         <TextInput
                             style={styles.input}
@@ -256,150 +279,84 @@ const User = ({ navigation }) => {  // Ensure you receive 'navigation' prop
                             value={newUser.role}
                             onChangeText={(value) => handleCreateInputChange('role', value)}
                         />
+
                         <TouchableOpacity style={styles.button} onPress={handleCreate}>
                             <Text style={styles.buttonText}>Create User</Text>
                         </TouchableOpacity>
                     </View>
                 )}
             </ScrollView>
-            <View style={styles.footer}>
-                <Text style={styles.footerText}>© 2024 Your Company Name</Text>
-            </View>
-            <View style={styles.footer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
-                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>HIVE</Text>
-                </TouchableOpacity>
-
-                <View style={styles.iconWrapper}>
-                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
-                    <Text style={styles.centeredText}>Dashboard</Text>
-                </View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
-                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
-                    <Text style={styles.footerText}>HONEY BAR</Text>
-                </TouchableOpacity>
-            </View>
         </ImageBackground>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     background: {
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
     },
     container: {
-        padding: 20,
+        width: '100%',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+        textAlign: 'center',
+        color: 'white',
     },
     searchBar: {
-        flexDirection: 'column',
-        alignItems: 'center', // Center align the items
-        marginBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 15,
     },
     input: {
-        width: '80%', // Adjust width to fit the screen
+        flex: 1,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'gray',
         borderRadius: 5,
-        marginBottom: 10,
+        marginRight: 10,
+        backgroundColor: '#000',
     },
     button: {
-        backgroundColor: '#4CAF50',
-        padding: 10,
+        backgroundColor: '#007BFF',
         borderRadius: 5,
-        width: '80%', // Adjust width to fit the screen
-        marginBottom: 10,
+        padding: 10,
+        margin: 5,
     },
     buttonText: {
-        color: '#fff',
+        color: 'white',
         textAlign: 'center',
     },
     userCard: {
-        backgroundColor: '#fff',
-        borderRadius: 5,
+        marginVertical: 10,
         padding: 15,
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.5,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        backgroundColor: '#000',
     },
     userTitle: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
     },
     userText: {
         fontSize: 16,
-        marginBottom: 5,
+        marginVertical: 5,
     },
     message: {
+        fontSize: 16,
         color: 'red',
-        marginBottom: 15,
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#ffd54f',
-        width: '100%',
-        height: 80,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: -2,
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 40,
-    },
-    footerItem: {
-        alignItems: 'center',
-    },
-    icon: {
-        width: 35,
-        height: 35,
-    },
-    roundIcon: {
-        marginHorizontal: 170,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderWidth: 2,
-        borderColor: '#000',
-        marginBottom: 12,
-        backgroundColor: '#ffd54f',
-    },
-    iconWrapper: {
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 10,
-        justifyContent: 'center',
-    },
-    centeredText: {
-        fontSize: 14,
-        color: '#000',
-        fontWeight: 'bold',
-        marginTop: 2,
-    },
-    footerText: {
-        marginTop: 5,
-        fontSize: 14,
-        color: '#000',
-        fontWeight: 'bold',
+        textAlign: 'center',
+        marginVertical: 10,
     },
 });
+
 export default User;

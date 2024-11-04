@@ -46,7 +46,7 @@ const App = () => {
 <Stack.Screen 
           name="Bocxode" 
           component={Boxcode} 
-          options={{ headerShown: false,  headerTitleAlign: center,}} 
+          options={{ headerShown: false}} 
         />
 
         <Stack.Screen 
@@ -58,7 +58,7 @@ const App = () => {
 <Stack.Screen 
           name="User" 
           component={User} 
-          options={{ headerShown: false, headerTitleAlign: center,}} 
+          options={{ headerShown: false}} 
         />
       </Stack.Navigator>
     </NavigationContainer>

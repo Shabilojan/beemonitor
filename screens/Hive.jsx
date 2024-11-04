@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Alert, ScrollView, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, Alert, ScrollView, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const Hive = ({ navigation }) => {
@@ -20,12 +20,9 @@ const Hive = ({ navigation }) => {
         honeyLevel: '',
     });
 
-    // Fetch hive details
     const fetchHiveDetails = () => {
-        console.log(`Fetching hive details for hiveNo: ${hiveNo}`);
         axios.get(`http://10.0.2.2:5000/hive-details?hiveNo=${hiveNo}`)
             .then(response => {
-                console.log('Response received:', response.data);
                 if (response.data.success) {
                     setHive(response.data.data);
                     setEditData(response.data.data);
@@ -36,7 +33,6 @@ const Hive = ({ navigation }) => {
                 }
             })
             .catch(error => {
-                console.log('Error fetching hive details:', error);
                 setHive(null);
                 setMessage('Error fetching hive details');
             });
@@ -126,29 +122,56 @@ const Hive = ({ navigation }) => {
         }));
     };
 
+    const validateInputs = () => {
+        const { hiveNo, expectedHarvestDate, temperature, honeyLevel } = newHive;
+        const currentDate = new Date();
+
+        if (!hiveNo) {
+            setMessage('Hive number is required.');
+            return false;
+        }
+
+        if (new Date(expectedHarvestDate) <= currentDate) {
+            setMessage('Expected harvest date must be a future date.');
+            return false;
+        }
+
+        if (temperature < 0 || temperature > 100) {
+            setMessage('Temperature must be between 0 and 100.');
+            return false;
+        }
+
+        if (honeyLevel < 0 || honeyLevel > 100) {
+            setMessage('Honey level must be between 0 and 100.');
+            return false;
+        }
+
+        return true;
+    };
+
     const handleCreate = () => {
-        axios.post('http://10.0.2.2:5000/hive-details', newHive)
-            .then(() => {
-                setMessage(`Hive #${newHive.hiveNo} has been created.`);
-                setIsCreating(false);
-                setHive(null);
-                setHiveNo('');
-            })
-            .catch(() => {
-                setMessage('Failed to create hive.');
-            });
+        if (validateInputs()) {
+            axios.post('http://10.0.2.2:5000/hive-details', newHive)
+                .then(() => {
+                    setMessage(`Hive #${newHive.hiveNo} has been created.`);
+                    setIsCreating(false);
+                    setHive(null);
+                    setHiveNo('');
+                })
+                .catch(() => {
+                    setMessage('hive number already exits.');
+                });
+        }
     };
 
     return (
         <ImageBackground 
-            source={require('../assets/Bg-02.png')} // Add your background image here
+            source={require('../assets/Bg-02.png')} 
             style={styles.background}
         >
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <Text style={styles.title}>Hive Details</Text>
-
-                    {/* Centered Search Bar */}
                     <View style={styles.searchContainer}>
                         <TextInput
                             style={styles.input}
@@ -158,8 +181,6 @@ const Hive = ({ navigation }) => {
                             onChangeText={setHiveNo}
                         />
                     </View>
-
-                    {/* Action Buttons */}
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={handleSearch}>
                             <Text style={styles.buttonText}>Search</Text>
@@ -302,39 +323,42 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
+        resizeMode: 'cover',
     },
     container: {
         flex: 1,
-        padding: 20,
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     scrollContainer: {
         flexGrow: 1,
         justifyContent: 'center',
-        paddingBottom: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'center',
-    },
-    searchContainer: {
-        marginBottom: 20,
+        color: 'black',
     },
     input: {
+        height: 40,
+        borderColor: 'gray',
         borderWidth: 1,
-        borderColor: '#ccc',
         borderRadius: 5,
         padding: 10,
         marginBottom: 10,
+        width: '100%',
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 20,
+        width: '100%',
     },
     button: {
-        backgroundColor: '#4CAF50',
+        backgroundColor: 'blue',
         padding: 10,
         borderRadius: 5,
         flex: 1,
@@ -342,20 +366,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        color: '#fff',
+        color: 'white',
         fontWeight: 'bold',
     },
     message: {
         color: 'red',
+        marginBottom: 10,
         textAlign: 'center',
-        marginBottom: 20,
     },
     hiveCard: {
-        padding: 20,
-        backgroundColor: '#A9A9A9',
-        borderRadius: 15,
-        elevation: 2,
+        backgroundColor: '#000',
+        padding: 15,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
         marginBottom: 20,
+        width: '100%',
     },
     hiveTitle: {
         fontSize: 20,
@@ -363,7 +395,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     hiveText: {
-        color:'#000',
         marginBottom: 5,
     },
 });

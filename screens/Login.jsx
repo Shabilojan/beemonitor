@@ -1,4 +1,3 @@
-// LoginScreen.jsx
 import Home from './Home';
 import React, { useState } from 'react';
 import {
@@ -8,6 +7,7 @@ import {
   Button,
   Alert,
   StyleSheet,
+  ImageBackground,
 } from 'react-native';
 import axios from 'axios';
 
@@ -24,8 +24,7 @@ const Login = ({ navigation }) => {
 
       if (response.data.success) {
         Alert.alert('Login Successful', 'Welcome!');
-        // Navigate to another screen or set user context here
-        navigation.navigate('Hivedetails'); // Replace 'Home' with your target screen
+        navigation.navigate('Hivedetails');
       } else {
         Alert.alert('Login Failed', response.data.message);
       }
@@ -36,37 +35,48 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <Button title="Login" onPress={handleLogin} />
-    </View>
+    <ImageBackground
+      source={require('../assets/Bg-02.png')} // Replace with the actual path to your image
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Login</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsername}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <Button title="Login" onPress={handleLogin} />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 16,
-    backgroundColor:'#000',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: adds a translucent overlay
   },
   title: {
     fontSize: 24,
     marginBottom: 24,
     textAlign: 'center',
+    color: '#fff',
   },
   input: {
     height: 40,
@@ -74,6 +84,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingLeft: 8,
+    backgroundColor: '#000',
   },
 });
 
