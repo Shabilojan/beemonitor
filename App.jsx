@@ -8,6 +8,7 @@ import Boxcode from './screens/Boxcode';
 import Welcome from './screens/Welcome';
 import User from './screens/User';
 import Hivedetails from './screens/Hivedetails';
+import Dashboard from './screens/Dashboard';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen 
+      <Stack.Screen 
+          name="Dashboard" 
+          component={Dashboard} 
+          options={{ headerShown: false}} 
+        />
+        {/* <Stack.Screen 
           name="Home" 
           component={Home} 
           options={{ headerShown: false }} // Hides the header if not needed
@@ -59,7 +65,7 @@ const App = () => {
           name="User" 
           component={User} 
           options={{ headerShown: false}} 
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
