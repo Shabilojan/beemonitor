@@ -24,7 +24,7 @@ const Login = ({ navigation }) => {
 
       if (response.data.success) {
         Alert.alert('Login Successful', 'Welcome!');
-        navigation.navigate('Hivedetails');
+        navigation.navigate('Dashboard');
       } else {
         Alert.alert('Login Failed', response.data.message);
       }

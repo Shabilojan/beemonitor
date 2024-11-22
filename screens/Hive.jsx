@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Alert, ScrollView, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text,Image, TextInput, Alert, ScrollView, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const Hive = ({ navigation }) => {
@@ -315,6 +315,22 @@ const Hive = ({ navigation }) => {
                     )}
                 </ScrollView>
             </View>
+            <View style={styles.footer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
+                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>HIVE</Text>
+                </TouchableOpacity>
+                
+                <View style={styles.iconWrapper}>
+                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
+                    <Text style={styles.centeredText}>Dashboard</Text>
+                </View>
+                
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
+                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>Honey Bar</Text>
+                </TouchableOpacity>
+            </View>
         </ImageBackground>
     );
 };
@@ -322,15 +338,11 @@ const Hive = ({ navigation }) => {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         resizeMode: 'cover',
     },
     container: {
         flex: 1,
         padding: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     scrollContainer: {
         flexGrow: 1,
@@ -358,7 +370,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        backgroundColor: 'blue',
+        backgroundColor: '#ffcc80',
         padding: 10,
         borderRadius: 5,
         flex: 1,
@@ -375,7 +387,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     hiveCard: {
-        backgroundColor: '#000',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         padding: 15,
         borderRadius: 10,
         shadowColor: '#000',
@@ -396,6 +408,68 @@ const styles = StyleSheet.create({
     },
     hiveText: {
         marginBottom: 5,
+        marginBottom: 5,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding:15,
+        marginBottom:20,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#ffd54f',
+        width: '100%',
+        height: 80,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: -2,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+        position: 'absolute',
+        bottom: 0,
+        paddingHorizontal: 40,
+    },
+    footerItem: {
+        alignItems: 'center',
+    },
+    icon: {
+        width: 35,
+        height: 35,
+    },
+    roundIcon: {
+        marginHorizontal: 170,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: '#000',
+        marginBottom: 12,
+        backgroundColor: '#ffd54f',
+    },
+    iconWrapper: {
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 10,
+        justifyContent: 'center',
+    },
+    centeredText: {
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
+        marginTop: 2,
+    },
+    footerText: {
+        marginTop: 5,
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
     },
 });
 

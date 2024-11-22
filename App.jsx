@@ -16,16 +16,20 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen 
-          name="Dashboard" 
-          component={Dashboard} 
-          options={{ headerShown: false}} 
-        />
+     
+     
         {/* <Stack.Screen 
           name="Home" 
           component={Home} 
           options={{ headerShown: false }} // Hides the header if not needed
         />
+
+        <Stack.Screen 
+          name="Dashboard" 
+          component={Dashboard} 
+          options={{ headerShown: false}} 
+        />
+
         <Stack.Screen 
           name="Menu" 
           component={Menu} 
@@ -41,15 +45,19 @@ const App = () => {
           name="Hivedetails" 
           component={Hivedetails} 
            
-        />
+        /> */}
 
-<Stack.Screen 
+{/* <Stack.Screen 
           name="Hive" 
-          component={Hive} 
+          component={Hive}
+          options={{
+            headerStyle: { backgroundColor: '#ffd54f' }, 
+            headerTintColor: 'black', 
+          }} 
         
-        />
+        /> */}
 
-<Stack.Screen 
+{/* <Stack.Screen 
           name="Bocxode" 
           component={Boxcode} 
           options={{ headerShown: false}} 
@@ -59,13 +67,16 @@ const App = () => {
           name="Welcome" 
           component={Welcome} 
           options={{ headerShown: false }} 
-        />
-
-<Stack.Screen 
-          name="User" 
-          component={User} 
-          options={{ headerShown: false}} 
         /> */}
+
+<Stack.Screen
+  name="User"
+  component={User}
+  options={{
+    headerStyle: { backgroundColor: '#ffd54f' }, 
+    headerTintColor: 'black', 
+  }}
+/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, ScrollView, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, TextInput, Image, Alert, ScrollView, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import axios from 'axios';
 
 const User = ({ navigation }) => {  
@@ -169,6 +169,7 @@ const User = ({ navigation }) => {
                         value={username}
                         onChangeText={setusername}
                     />
+                  <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={handleSearch}>
                         <Text style={styles.buttonText}>Search</Text>
                     </TouchableOpacity>
@@ -181,6 +182,7 @@ const User = ({ navigation }) => {
                         </TouchableOpacity>
                     )}
                 </View>
+                </View>
 
                 {message ? <Text style={styles.message}>{message}</Text> : null}
 
@@ -191,7 +193,7 @@ const User = ({ navigation }) => {
                         <Text style={styles.userText}>Email: {user.email}</Text>
                         <Text style={styles.userText}>Role: {user.role}</Text>
 
-                        <View style={styles.button}>
+                        <View style={styles.button1}>
                             <TouchableOpacity style={styles.button} onPress={handleEditToggle}>
                                 <Text style={styles.buttonText}>Edit User</Text>
                             </TouchableOpacity>
@@ -228,9 +230,10 @@ const User = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 )}
-
+                
                 {isCreating && (
                     <View style={styles.userCard}>
+                        <ScrollView>
                         <Text style={styles.userTitle}>Create New User</Text>
 
                         <TextInput
@@ -283,9 +286,30 @@ const User = ({ navigation }) => {
                         <TouchableOpacity style={styles.button} onPress={handleCreate}>
                             <Text style={styles.buttonText}>Create User</Text>
                         </TouchableOpacity>
+                       </ScrollView>
+
+                        
+                        
                     </View>
+                    
                 )}
             </ScrollView>
+         <View style={styles.footer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
+                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>HIVE</Text>
+                </TouchableOpacity>
+                
+                <View style={styles.iconWrapper}>
+                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
+                    <Text style={styles.centeredText}>Dashboard</Text>
+                </View>
+                
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
+                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>Honey Bar</Text>
+                </TouchableOpacity>
+            </View>
         </ImageBackground>
     );
 };
@@ -293,69 +317,149 @@ const User = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
+
+
     background: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+        resizeMode: 'cover',
     },
     container: {
-        width: '100%',
+        flex: 1,
+        padding: 16,
+      
     },
+  
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'center',
-        color: 'white',
+        color: 'black',
     },
+
     searchBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 15,
     },
     input: {
-        flex: 1,
-        padding: 10,
-        borderWidth: 1,
+        height: 40,
         borderColor: 'gray',
-        borderRadius: 5,
-        marginRight: 10,
-        backgroundColor: '#000',
-    },
-    button: {
-        backgroundColor: '#007BFF',
+        borderWidth: 1,
         borderRadius: 5,
         padding: 10,
-        margin: 5,
+        marginBottom: 10,
+        width: '100%',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        width: '100%',
+    },
+
+    button: {
+        backgroundColor: '#ffcc80',
+        padding: 10,
+        marginBottom:10,
+        borderRadius: 5,
+        flex: 1,
+        marginHorizontal: 5,
+        alignItems: 'center',
     },
     buttonText: {
         color: 'white',
+        fontWeight: 'bold',
+    },
+    message: {
+        color: 'red',
+        marginBottom: 10,
         textAlign: 'center',
     },
     userCard: {
-        marginVertical: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)', // transparent black
         padding: 15,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        backgroundColor: '#000',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        marginBottom: 20,
+        width: '100%',
     },
+
     userTitle: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
     },
     userText: {
-        fontSize: 16,
-        marginVertical: 5,
+        marginBottom: 5,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding:15,
+        marginBottom:20,
+        
     },
-    message: {
-        fontSize: 16,
-        color: 'red',
-        textAlign: 'center',
-        marginVertical: 10,
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#ffd54f',
+        width: '100%',
+        height: 80,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: -2,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+        position: 'absolute',
+        bottom: 0,
+        paddingHorizontal: 40,
+    },
+    footerItem: {
+        alignItems: 'center',
+    },
+    icon: {
+        width: 35,
+        height: 35,
+    },
+    roundIcon: {
+        marginHorizontal: 170,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: '#000',
+        marginBottom: 12,
+        backgroundColor: '#ffd54f',
+    },
+    iconWrapper: {
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 10,
+        justifyContent: 'center',
+    },
+    centeredText: {
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
+        marginTop: 2,
+    },
+    footerText: {
+        marginTop: 5,
+        fontSize: 14,
+        color: '#000',
+        fontWeight: 'bold',
     },
 });
 

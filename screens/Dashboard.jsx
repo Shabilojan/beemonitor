@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 const Dashboard = () => {
   const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation(); // Access navigation object
 
   const fetchWeather = async () => {
     setLoading(true);
@@ -54,9 +56,9 @@ const Dashboard = () => {
 
             {/* Buttons below the weather data */}
             <View style={styles.buttonContainer}>
-              <Button title="Button 1" onPress={() => alert('Button 1 clicked')} />
-              <Button title="Button 2" onPress={() => alert('Button 2 clicked')} />
-              <Button title="Button 3" onPress={() => alert('Button 3 clicked')} />
+              <Button title="Hive Management" onPress={() => navigation.navigate('Hivedetails')} />
+              <Button title="User Management" onPress={() => navigation.navigate('User')} />
+              <Button title="Bee farming" onPress={() => alert('Button 3 clicked')} />
             </View>
           </View>
         )}
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
+    width: '50%',
   },
 });
 
