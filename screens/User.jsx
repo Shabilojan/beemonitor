@@ -91,7 +91,7 @@ const User = ({ navigation }) => {
     const handleUpdate = () => {
         axios.put(`http://10.0.2.2:5000/user-details/${username}`, editData)
             .then(() => {
-                setMessage(`User #${userId} has been updated.`);
+                setMessage(`User #${username} has been updated.`);
                 fetchUserDetails();
                 setIsEditing(false);
             })

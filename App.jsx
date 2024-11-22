@@ -18,7 +18,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="Home">
      
      
-        {/* <Stack.Screen 
+        <Stack.Screen 
           name="Home" 
           component={Home} 
           options={{ headerShown: false }} // Hides the header if not needed
@@ -45,9 +45,9 @@ const App = () => {
           name="Hivedetails" 
           component={Hivedetails} 
            
-        /> */}
+        />
 
-{/* <Stack.Screen 
+<Stack.Screen 
           name="Hive" 
           component={Hive}
           options={{
@@ -55,9 +55,9 @@ const App = () => {
             headerTintColor: 'black', 
           }} 
         
-        /> */}
+        />
 
-{/* <Stack.Screen 
+<Stack.Screen 
           name="Bocxode" 
           component={Boxcode} 
           options={{ headerShown: false}} 
@@ -67,7 +67,7 @@ const App = () => {
           name="Welcome" 
           component={Welcome} 
           options={{ headerShown: false }} 
-        /> */}
+        />
 
 <Stack.Screen
   name="User"
