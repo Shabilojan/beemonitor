@@ -21,7 +21,7 @@ const Hive = ({ navigation }) => {
     });
 
     const fetchHiveDetails = () => {
-        axios.get(`http://10.0.2.2:5000/hive-details?hiveNo=${hiveNo}`)
+        axios.get(`http://latin-brigida-techzone99-1b599f95.koyeb.app/hive-details?hiveNo=${hiveNo}`)
             .then(response => {
                 if (response.data.success) {
                     setHive(response.data.data);
@@ -63,7 +63,7 @@ const Hive = ({ navigation }) => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://10.0.2.2:5000/hive-details?hiveNo=${hiveNo}`)
+                    axios.delete(`http://latin-brigida-techzone99-1b599f95.koyeb.app/hive-details?hiveNo=${hiveNo}`)
                         .then(() => {
                             setMessage(`Hive #${hiveNo} has been deleted.`);
                             setHive(null);
@@ -91,7 +91,7 @@ const Hive = ({ navigation }) => {
     };
 
     const handleUpdate = () => {
-        axios.put(`http://10.0.2.2:5000/hive-details`, editData)
+        axios.put(`http://latin-brigida-techzone99-1b599f95.koyeb.app/hive-details`, editData)
             .then(() => {
                 setMessage(`Hive #${editData.hiveNo} has been updated.`);
                 setIsEditing(false);
@@ -151,7 +151,7 @@ const Hive = ({ navigation }) => {
 
     const handleCreate = () => {
         if (validateInputs()) {
-            axios.post('http://10.0.2.2:5000/hive-details', newHive)
+            axios.post('http://latin-brigida-techzone99-1b599f95.koyeb.app/hive-details', newHive)
                 .then(() => {
                     setMessage(`Hive #${newHive.hiveNo} has been created.`);
                     setIsCreating(false);

@@ -22,7 +22,7 @@ const User = ({ navigation }) => {
 
     // Fetch user details
     const fetchUserDetails = () => {
-        axios.get(`http://10.0.2.2:5000/user-details/${username}`)
+        axios.get(`http://latin-brigida-techzone99-1b599f95.koyeb.app/user-details/${username}`)
             .then(response => {
                 if (response.data.success) {
                     setUser(response.data.data);
@@ -64,7 +64,7 @@ const User = ({ navigation }) => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://10.0.2.2:5000/user-details/${username}`)
+                    axios.delete(`http://latin-brigida-techzone99-1b599f95.koyeb.app/user-details/${username}`)
                         .then(() => {
                             setMessage(`User #${username} has been deleted.`);
                             handleClear();
@@ -89,7 +89,7 @@ const User = ({ navigation }) => {
     };
 
     const handleUpdate = () => {
-        axios.put(`http://10.0.2.2:5000/user-details/${username}`, editData)
+        axios.put(`http://latin-brigida-techzone99-1b599f95.koyeb.app/user-details/${username}`, editData)
             .then(() => {
                 setMessage(`User #${username} has been updated.`);
                 fetchUserDetails();
@@ -142,7 +142,7 @@ const User = ({ navigation }) => {
             return;
         }
 
-        axios.post(`http://10.0.2.2:5000/user-details`, newUser)
+        axios.post(`http://latin-brigida-techzone99-1b599f95.koyeb.app/user-details`, newUser)
             .then(() => {
                 setMessage(`User ${newUser.username} has been created.`);
                 setIsCreating(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, ImageBackground,TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
     setLoading(true);
     setWeatherData(null);
     try {
-      const response = await fetch(`http://10.0.2.2:5000/weather/${city}`); // Replace with your IP
+      const response = await fetch(`http://latin-brigida-techzone99-1b599f95.koyeb.app/weather/${city}`); // Replace with your IP
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error ${response.status}: ${errorText}`);
@@ -56,10 +56,13 @@ const Dashboard = () => {
 
             {/* Buttons below the weather data */}
             <View style={styles.buttonContainer}>
-              <Button title="Hive Management" onPress={() => navigation.navigate('Hivedetails')} />
-              <Button title="User Management" onPress={() => navigation.navigate('User')} />
-              <Button title="Bee farming" onPress={() => alert('Button 3 clicked')} />
-            </View>
+                                <TouchableOpacity style={styles.button} onPress={() =>  navigation.navigate('Hive')}>
+                                    <Text style={styles.buttonText}>Hive management</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.button} onPress={() =>  navigation.navigate('User')}>
+                                    <Text style={styles.buttonText}>User management</Text>
+                                </TouchableOpacity>
+                            </View>
           </View>
         )}
       </View>
@@ -92,6 +95,8 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     backgroundColor: '#fff',
     marginBottom: 20,
+    color: '#000',
+    
   },
   weatherContainer: {
     marginTop: 20,
@@ -103,11 +108,23 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   buttonContainer: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '50%',
-  },
+    marginBottom: 20,
+    width: '100%',
+},
+button: {
+    backgroundColor: '#ffcc80',
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: 'center',
+},
+buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+},
 });
 
 export default Dashboard;
