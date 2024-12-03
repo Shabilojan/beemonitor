@@ -12,7 +12,7 @@ const Dashboard = () => {
     setLoading(true);
     setWeatherData(null);
     try {
-      const response = await fetch(`http://latin-brigida-techzone99-1b599f95.koyeb.app/weather/${city}`); // Replace with your IP
+      const response = await fetch(`http://192.168.85.173:5000/weather/${city}`); // Replace with your IP
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error ${response.status}: ${errorText}`);
