@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, ImageBackground,TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  ActivityIndicator, 
+  ImageBackground, 
+  ScrollView 
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
 
 const Dashboard = () => {
   const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation(); // Access navigation object
+  const navigation = useNavigation();
 
   const fetchWeather = async () => {
     setLoading(true);
     setWeatherData(null);
     try {
-      const response = await fetch(`http://192.168.85.173:5000/weather/${city}`); // Replace with your IP
+      const response = await fetch(`http://192.168.85.173:5000/weather/${city}`);
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error ${response.status}: ${errorText}`);
@@ -31,41 +40,46 @@ const Dashboard = () => {
 
   return (
     <ImageBackground 
-      source={require('../assets/Bg-02.png')} // Replace with your image path
+      source={require('../assets/Bg-02.png')} 
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Weather Dashboard</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter city"
-          value={city}
-          onChangeText={setCity}
-        />
-        <Button title="Get Weather" onPress={fetchWeather} />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Weather Dashboard</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter city"
+            placeholderTextColor="#aaa"
+            value={city}
+            onChangeText={setCity}
+          />
+          <TouchableOpacity style={styles.getWeatherButton} onPress={fetchWeather}>
+            <Text style={styles.getWeatherButtonText}>Get Weather</Text>
+          </TouchableOpacity>
 
-        {loading && <ActivityIndicator size="large" color="#fff" />}
+          {loading && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
 
-        {weatherData && (
-          <View style={styles.weatherContainer}>
-            <Text style={styles.info}>City: {weatherData.city}</Text>
-            <Text style={styles.info}>Temperature: {weatherData.temperature}°C</Text>
-            <Text style={styles.info}>Weather: {weatherData.weather}</Text>
-            <Text style={styles.info}>Humidity: {weatherData.humidity}%</Text>
+          {weatherData && (
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Weather Information</Text>
+              <Text style={styles.info}>City: {weatherData.city}</Text>
+              <Text style={styles.info}>Temperature: {weatherData.temperature}°C</Text>
+              <Text style={styles.info}>Weather: {weatherData.weather}</Text>
+              <Text style={styles.info}>Humidity: {weatherData.humidity}%</Text>
+            </View>
+          )}
 
-            {/* Buttons below the weather data */}
-            <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button} onPress={() =>  navigation.navigate('Hive')}>
-                                    <Text style={styles.buttonText}>Hive management</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.button} onPress={() =>  navigation.navigate('User')}>
-                                    <Text style={styles.buttonText}>User management</Text>
-                                </TouchableOpacity>
-                            </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('Hive')}>
+              <Text style={styles.cardButtonText}>Hive Management</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('User')}>
+              <Text style={styles.cardButtonText}>User Management</Text>
+            </TouchableOpacity>
           </View>
-        )}
-      </View>
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -74,57 +88,87 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  container: {
-    flex: 1,
-    padding: 20,
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent background
+  },
+  container: {
+    width: '90%',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 10,
+    padding: 20,
+    marginVertical: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 20,
   },
   input: {
-    width: '80%',
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: '#fff',
+    width: '100%',
+    height: 45,
     backgroundColor: '#fff',
-    marginBottom: 20,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
     color: '#000',
-    
   },
-  weatherContainer: {
+  getWeatherButton: {
+    backgroundColor: '#2196f3',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 15,
+  },
+  getWeatherButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  loader: {
+    marginTop: 10,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: '#333',
+    borderRadius: 10,
+    padding: 15,
     marginTop: 20,
     alignItems: 'center',
   },
-  info: {
-    fontSize: 18,
-    marginBottom: 10,
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
     color: '#fff',
+    marginBottom: 10,
+  },
+  info: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 5,
   },
   buttonContainer: {
     flexDirection: 'row',
+    marginTop: 20,
     justifyContent: 'space-between',
-    marginBottom: 20,
     width: '100%',
-},
-button: {
-    backgroundColor: '#ffcc80',
-    padding: 10,
-    borderRadius: 5,
+  },
+  cardButton: {
     flex: 1,
     marginHorizontal: 5,
+    backgroundColor: '#ffcc80',
+    borderRadius: 5,
+    paddingVertical: 10,
     alignItems: 'center',
-},
-buttonText: {
-    color: 'white',
+  },
+  cardButtonText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
-},
+  },
 });
 
 export default Dashboard;

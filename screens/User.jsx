@@ -305,7 +305,7 @@ const User = ({ navigation }) => {
                     <Text style={styles.centeredText}>Dashboard</Text>
                 </View>
                 
-                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
+                <TouchableOpacity onPress={() => navigation.navigate('Beefarming')} style={styles.footerItem}>
                     <Image source={require('../assets/vector2.png')} style={styles.icon} />
                     <Text style={styles.footerText}>Honey Bar</Text>
                 </TouchableOpacity>

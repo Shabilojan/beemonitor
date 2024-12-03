@@ -9,6 +9,7 @@ import Welcome from './screens/Welcome';
 import User from './screens/User';
 import Hivedetails from './screens/Hivedetails';
 import Dashboard from './screens/Dashboard';
+import Beefarming from './screens/Beefarming';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +28,11 @@ const App = () => {
         <Stack.Screen 
           name="Dashboard" 
           component={Dashboard} 
-          options={{ headerShown: false}} 
+          options={{
+            headerStyle: { backgroundColor: '#ffd54f' }, 
+            headerTintColor: 'black', 
+          }} 
+        
         />
 
         <Stack.Screen 
@@ -72,6 +77,15 @@ const App = () => {
 <Stack.Screen
   name="User"
   component={User}
+  options={{
+    headerStyle: { backgroundColor: '#ffd54f' }, 
+    headerTintColor: 'black', 
+  }}
+/>
+
+<Stack.Screen
+  name="Bee farming"
+  component={Beefarming}
   options={{
     headerStyle: { backgroundColor: '#ffd54f' }, 
     headerTintColor: 'black', 

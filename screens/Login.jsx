@@ -1,14 +1,13 @@
-import Home from './Home';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
-  Text,
   TextInput,
   Button,
   Alert,
   StyleSheet,
   ImageBackground,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 
@@ -49,23 +48,26 @@ const Login = ({ navigation }) => {
         {isLoading ? ( // Conditionally render loading indicator
           <ActivityIndicator size="large" color="#0000ff" />
         ) : ( // Render login form when not loading
-          <>
-            <Text style={styles.title}>Login</Text>
+          <View style={styles.content}>
+            <Image style={styles.logo} source={require('../assets/4.png')} />
             <TextInput
               style={styles.input}
               placeholder="Username"
+              placeholderTextColor="#aaa"
               value={username}
               onChangeText={setUsername}
             />
             <TextInput
               style={styles.input}
               placeholder="Password"
+              placeholderTextColor="#aaa"
               secureTextEntry
               value={password}
               onChangeText={setPassword}
             />
-            <Button title="Login" onPress={handleLogin} />
-          </>
+            <Button title="Login" style={styles.Button} onPress={handleLogin} />
+            
+          </View>
         )}
       </View>
     </ImageBackground>
@@ -84,19 +86,26 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: adds a translucent overlay
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 24,
-    textAlign: 'center',
-    color: '#fff',
-  },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 12,
     paddingLeft: 8,
-    backgroundColor: '#000',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)', // Semi-transparent white
+    borderRadius: 5,
+    width: '90%',
+    color: '#000', // Ensure text is visible on transparent background
+  },
+  content: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginTop: 20,
+    marginBottom:20, // Add spacing between the login button and the image
   },
 });
 
