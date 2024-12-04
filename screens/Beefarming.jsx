@@ -11,183 +11,149 @@ import {
 const Beefarming = () => {
   return (
     <View style={styles.container}>
-    <Image style={{ position: 'absolute', width: '100%', height: '100%' }} blurRadius={5}source={require('../assets/Bg.png')} />
-    <SafeAreaView>
+      <Image style={{ position: 'absolute', width: '100%', height: '100%' }} blurRadius={5} source={require('../assets/Bg.png')} />
+      <SafeAreaView>
 
-      <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView}>
 
-        <Text style={styles.heading}>
-        How to do Bee Farming using technology
-        </Text>
+          <Text style={styles.heading}>
+            How to do Bee Farming using technology
+          </Text>
 
-        <Image style={{ width: 150, height: 150, marginLeft:20,marginTop:10}} source={require('../assets/Pic-03.jpeg')} />
+          <Image style={{ width: 150, height: 150, marginLeft: 20, marginTop: 10 }} source={require('../assets/Pic-03.jpeg')} />
 
-        <Text style={styles.Subheading}>
-        Early Blight: 
-        This disease is caused by the fungus Alternaria solani.
-        It usually appears as dark brown or black spots with concentric rings on 
-        lower leaves of the potato plant. Early blight can cause significant defoliation if not controlled.
-        Cure methods
-        </Text>
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>1. Crop Rotation:</Text>
-                  <Text style={styles.pointDescription}>
-                    Crop rotation involves changing the type of crop grown in a particular 
-                    area each season. This practice interrupts the life cycles of 
-                    soil-borne diseases and pests. By rotating crops, especially avoiding 
-                    those in the same family as potatoes (Solanaceae), you reduce the buildup
-                    of early blight spores in the soil.
-                  </Text>
-                </View>
+          <Text style={styles.Subheading}>
+            Introduction to Bee Farming:
+          </Text>
+          <Text style={styles.text}>
+            Bee farming, also known as apiculture, is the practice of keeping and managing bee colonies for honey production, pollination services, and other bee products like beeswax and royal jelly. With the rapid advancement of technology, beekeepers can now integrate various tech solutions to monitor and enhance bee health, manage hives more effectively, and improve productivity. In this guide, we will explore how technology can play a pivotal role in modern bee farming practices.
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>2. Resistant Varieties:</Text>
-                  <Text style={styles.pointDescription}>
-                    Planting potato varieties that are bred to be resistant 
-                    to early blight reduces the likelihood of infection. 
-                    These varieties have genetic traits that either make them less attractive 
-                    to the blight pathogen or better able to resist infection.
-                  </Text>
-                </View>
+          <Text style={styles.Subheading}>
+            The Importance of Bee Farming:
+          </Text>
+          <Text style={styles.text}>
+            Bees are crucial for pollination, which supports the production of many of the fruits, vegetables, and seeds we rely on for food. Apart from honey production, bees also help in pollinating plants and flowers, contributing to biodiversity. Bee farming not only provides economic benefits to farmers but also helps in sustaining global food production systems.
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>3. Proper Spacing:</Text>
-                  <Text style={styles.pointDescription}>
-                    Proper spacing between plants allows air to circulate freely, 
-                    educing humidity around the foliage. High humidity and poor air 
-                    circulation create an ideal environment for the early blight fungus to thrive and spread.
-                  </Text>
-                </View>
+          <Text style={styles.Subheading}>
+            Technological Tools in Bee Farming:
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>4. Mulching:</Text>
-                  <Text style={styles.pointDescription}>
-                    Mulching involves covering the soil around your plants with organic
-                    materials like straw, grass clippings, or compost. 
-                    This barrier prevents soil, which can harbor blight spores, 
-                    from splashing onto the leaves during watering or rainfall, 
-                    thus reducing the spread of the fungus.
-                  </Text>
-                </View>
+          <Text style={styles.text}>
+            With the advent of smart agriculture, technology has significantly transformed bee farming. Some of the tools that have revolutionized the field include:
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>5. Neem Oil:</Text>
-                  <Text style={styles.pointDescription}>
-                    Neem oil is extracted from the seeds of the neem tree. It has antifungal 
-                    that help prevent and control fungal diseases like early blight.
-                     Regular application creates a protective layer on the plants that inhibits fungal growth.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>1. Hive Monitoring Systems:</Text>
+            <Text style={styles.pointDescription}>
+              Hive monitoring systems include sensors that track temperature, humidity, and weight of the hives, providing real-time data to beekeepers. This helps in detecting any abnormalities such as sudden drops in weight, which could indicate a honey theft or a potential health issue among the bees.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>6. Compost Tea:</Text>
-                  <Text style={styles.pointDescription}>
-                    Compost tea is a liquid solution made by steeping compost in water.
-                    It is rich in beneficial microorganisms that can outcompete harmful
-                     fungi like the early blight pathogen. Applying compost tea to the 
-                     plants can boost their immune system and enhance their ability to resist diseases.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>2. Digital Bee Health Monitoring:</Text>
+            <Text style={styles.pointDescription}>
+              Sensors placed inside the hives can track bee behavior, such as the activity level of bees and the presence of diseases or pests. With advanced AI algorithms, these systems can alert the beekeeper about any potential threats or health issues before they become major problems.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>7. Baking Soda Solution:</Text>
-                  <Text style={styles.pointDescription}>
-                    Baking soda (sodium bicarbonate) creates an alkaline environment on the leaf surface,
-                    which is unfavorable for fungal growth. Mixing baking soda
-                     with vegetable oil and water and spraying it on plants helps
-                      to prevent the fungus from establishing itself.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>3. Automated Hive Management:</Text>
+            <Text style={styles.pointDescription}>
+              Automation tools allow beekeepers to control hive temperature, ventilation, and humidity levels from a mobile device. This ensures optimal conditions for the bees, improving their productivity and overall health.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>8. Remove Infected Leaves:</Text>
-                  <Text style={styles.pointDescription}>
-                    Removing leaves that show symptoms of early blight (dark spots with concentric rings) 
-                    an limit the spread of the disease. Infected leaves are a 
-                    source of spores that can spread to healthy leaves, so timely removal is crucial.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>4. GPS for Hive Location Tracking:</Text>
+            <Text style={styles.pointDescription}>
+              GPS-enabled devices help beekeepers track the locations of their hives, ensuring that they are placed in areas with ample forage and away from hazardous zones. This helps in improving bee productivity and prevents loss of hives due to theft or misplacement.
+            </Text>
+          </View>
 
-        <Text style={styles.Subheading}>
-        Late Blight
-        Caused by the oomycete Phytophthora infestans, late blight is more severe 
-        nd infamous for causing the Irish potato famine in the 1840s. 
-        It appears as water-soaked lesions on leaves that can spread rapidly 
-        to other parts of the plant, including the tubers. Late blight thrives in cool, wet conditions.
-        </Text>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>5. Drones in Bee Farming:</Text>
+            <Text style={styles.pointDescription}>
+              Drones can be used to monitor the health of beehives, detect pests, and even help in the pollination process. They are especially useful in large-scale bee farming operations, where it's difficult to manually monitor each hive.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>1. Copper Fungicide:</Text>
-                  <Text style={styles.pointDescription}>
-                    Copper fungicides are effective in controlling late blight. 
-                    hey work by interfering with the cellular processes of the fungus. 
-                    While not entirely natural, copper fungicides are permitted in organic farming under certain conditions and are considered a viable option for controlling late blight.
-                  </Text>
-                </View>
+          <Text style={styles.Subheading}>
+            Challenges Faced in Bee Farming:
+          </Text>
+          <Text style={styles.text}>
+            While bee farming offers numerous benefits, it is not without challenges. Some common issues faced by beekeepers include:
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>2. Garlic Spray:</Text>
-                  <Text style={styles.pointDescription}>
-                    Garlic contains sulfur compounds that have antifungal properties. 
-                    a garlic spray involves crushing garlic cloves, steeping them in water, 
-                    and then spraying the solution on the plants. This creates a protective layer that helps prevent fungal infections.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>1. Colony Collapse Disorder (CCD):</Text>
+            <Text style={styles.pointDescription}>
+              CCD is a phenomenon where the majority of worker bees in a colony disappear, leaving behind the queen, food, and a few nurse bees. This can be caused by various factors, including pesticide use, disease, and environmental stressors.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>3. Milk Spray:</Text>
-                  <Text style={styles.pointDescription}>
-                    Milk, particularly raw milk, contains beneficial bacteria 
-                    nd compounds like lactoferrin that can inhibit fungal growth.
-                     Diluting milk with water and spraying it on plant leaves 
-                     can help control late blight by creating an environment unfavorable to the fungus.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>2. Disease and Pest Control:</Text>
+            <Text style={styles.pointDescription}>
+              Bees are vulnerable to various diseases and pests, such as the Varroa mite. These pests can weaken the bee colony and affect honey production. Beekeepers need to use both organic and tech-based solutions to monitor and treat diseases and pests effectively.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>4. Hydrogen Peroxide Solution:</Text>
-                  <Text style={styles.pointDescription}>
-                    Hydrogen peroxide is a disinfectant that can kill fungal spores on contact. 
-                    iluting it with water and spraying it on plants can help control 
-                    the spread of late blight by killing spores before they can infect the plant.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>3. Climate Change:</Text>
+            <Text style={styles.pointDescription}>
+              Changes in climate, including rising temperatures and altered rainfall patterns, can affect the availability of forage for bees. It can also cause shifts in the timing of flowering plants, disrupting the bees' natural foraging patterns.
+            </Text>
+          </View>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>5. Watering Practices:</Text>
-                  <Text style={styles.pointDescription}>
-                    Wet leaves create an ideal environment for fungal 
-                    spores to germinate and infect plants.
-                    Watering plants at the base rather than from above keeps the leaves dry. 
-                    Watering in the morning ensures that any water that does get on the
-                    leaves can evaporate quickly during the day.
-                  </Text>
-                </View>
+          <Text style={styles.Subheading}>
+            Sustainable Practices in Bee Farming:
+          </Text>
+          <Text style={styles.text}>
+            To ensure the long-term success of bee farming, it is crucial to adopt sustainable practices that protect the environment and the health of bee colonies:
+          </Text>
 
-                <View style={styles.pointContainer}>
-                  <Text style={styles.pointTitle}>6. Clean-Up Debris:</Text>
-                  <Text style={styles.pointDescription}>
-                    Late blight spores can survive in plant debris and soil over winter. 
-                    emoving and destroying all plant debris at the end of the growing season 
-                    reduces the chances of the pathogen surviving to infect new plants the following year.
-                  </Text>
-                </View>
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>1. Integrated Pest Management (IPM):</Text>
+            <Text style={styles.pointDescription}>
+              Integrated Pest Management (IPM) involves the use of biological, mechanical, and cultural methods to control pests. This reduces the need for harmful chemicals, making bee farming more sustainable.
+            </Text>
+          </View>
 
-                      </ScrollView>
-                    </SafeAreaView>
-                    </View>
-                  );
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>2. Organic Practices:</Text>
+            <Text style={styles.pointDescription}>
+              Organic bee farming focuses on using natural products to maintain healthy bee populations. This includes using natural predators to control pests and promoting biodiversity by planting a variety of flowering plants around the hives.
+            </Text>
+          </View>
+
+          <View style={styles.pointContainer}>
+            <Text style={styles.pointTitle}>3. Conservation of Wild Bees:</Text>
+            <Text style={styles.pointDescription}>
+              In addition to managing honeybee colonies, beekeepers can contribute to the conservation of wild bee populations by creating habitats that support pollinator diversity, such as planting wildflowers and protecting natural bee habitats.
+            </Text>
+          </View>
+
+          <Text style={styles.Subheading}>
+            Conclusion:
+          </Text>
+          <Text style={styles.text}>
+            Bee farming, combined with the power of technology, can significantly enhance productivity, sustainability, and bee health. By utilizing modern tools and sustainable practices, beekeepers can ensure the success of their farms while also contributing to global biodiversity and food security.
+          </Text>
+
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-  
-  
-
+    flex: 1,
   },
   scrollView: {
-    marginTop:25,
+    marginTop: 25,
     backgroundColor: 'rgba(255, 255, 255, 0.45)',
     marginHorizontal: 10,
     width: 350,
@@ -196,54 +162,49 @@ const styles = StyleSheet.create({
     marginVertical: 100,
     borderRadius: 10,
   },
-  
-  heading:{
-    marginTop:10,
-    fontSize: 22,
-    padding:10,
-    textAlign:'center',
-    fontWeight:'bold',
-    color: 'black',
 
+  heading: {
+    marginTop: 10,
+    fontSize: 22,
+    padding: 10,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'black',
   },
 
-  Subheading:{
-    marginTop:10,
+  Subheading: {
+   
     fontSize: 15,
-    padding:10,
-    textAlign:'auto',
-    fontWeight:'bold',
-    marginBottom:10,
+    padding: 10,
+    textAlign: 'auto',
+    fontWeight: 'bold',
+    marginBottom: -10,
     color: 'black',
-
   },
 
   text: {
-    fontSize: 20,
-    padding:25,
-    color: 'black',
-  },
-
-  pointTitle:{
     fontSize: 15,
-    padding:10,
-    textAlign:'auto',
-    fontWeight:'bold',
-    marginBottom:10,
+    padding: 15,
     color: 'black',
-
   },
-  pointDescription:{
-    fontSize: 13,
-    padding:2,
-    textAlign:'auto',
-    fontWeight:'bold',
-    marginBottom:10,
-    marginHorizontal:20,
-    color: 'black',
 
+  pointTitle: {
+    fontSize: 15,
+    padding: 10,
+    textAlign: 'auto',
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: 'black',
+  },
+  pointDescription: {
+    fontSize: 13,
+    padding: 2,
+    textAlign: 'auto',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginHorizontal: 20,
+    color: 'black',
   }
 });
-
 
 export default Beefarming;
