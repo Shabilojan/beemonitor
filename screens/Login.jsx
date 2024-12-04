@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
   View,
   TextInput,
-  Button,
+  TouchableOpacity,
+  Text,
   Alert,
   StyleSheet,
   ImageBackground,
@@ -27,7 +28,7 @@ const Login = ({ navigation }) => {
 
       if (response.data.success) {
         Alert.alert('Login Successful', 'Welcome!');
-        navigation.navigate('Dashboard');
+        navigation.navigate('Dashboard'); // Navigate to Dashboard if login is successful
       } else {
         Alert.alert('Login Failed', response.data.message);
       }
@@ -65,8 +66,9 @@ const Login = ({ navigation }) => {
               value={password}
               onChangeText={setPassword}
             />
-            <Button title="Login" style={styles.Button} onPress={handleLogin} />
-            
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 20,
     paddingLeft: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.25)', // Semi-transparent white
     borderRadius: 5,
@@ -105,7 +107,20 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginTop: 20,
-    marginBottom:20, // Add spacing between the login button and the image
+    marginBottom: 20, 
+  },
+  button: {
+    marginTop:20,
+    backgroundColor: '#ffa500', 
+    padding: 10,
+    width: '40%',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
