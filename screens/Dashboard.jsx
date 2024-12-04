@@ -1,27 +1,60 @@
-import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  ActivityIndicator, 
-  ImageBackground, 
-  ScrollView 
+import React, { useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  TextInput,
+  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
+  ImageBackground,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
+
+const { width } = Dimensions.get('window');
 
 const Dashboard = () => {
+  const navigation = useNavigation();
+  const scrollViewRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+
+  const buttons = [
+    {
+      id: 1,
+      image: require('../assets/Pic-03.jpeg'),
+      text: 'Hive Management',
+      navigateTo: 'Hive',
+    },
+    {
+      id: 2,
+      image: require('../assets/Pic-03.jpeg'),
+      text: 'User Management',
+      navigateTo: 'User',
+    },
+    {
+      id: 3,
+      image: require('../assets/Pic-03.jpeg'),
+      text: 'Bee Farming',
+      navigateTo: 'Beefarming',
+    },
+  ];
+
+  const handleScroll = (event) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(contentOffsetX / (width * 0.6));
+    setActiveIndex(index);
+  };
 
   const fetchWeather = async () => {
     setLoading(true);
     setWeatherData(null);
     try {
-      const response = await fetch(`http://192.168.85.173:5000/weather/${city}`);
+      const response = await fetch(`http://192.168.228.173:5000/weather/${city}`);
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error ${response.status}: ${errorText}`);
@@ -44,42 +77,69 @@ const Dashboard = () => {
       style={styles.background}
       resizeMode="cover"
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Weather Dashboard</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter city"
-            placeholderTextColor="#aaa"
-            value={city}
-            onChangeText={setCity}
-          />
-          <TouchableOpacity style={styles.getWeatherButton} onPress={fetchWeather}>
-            <Text style={styles.getWeatherButtonText}>Get Weather</Text>
-          </TouchableOpacity>
-
-          {loading && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
-
-          {weatherData && (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Weather Information</Text>
-              <Text style={styles.info}>City: {weatherData.city}</Text>
-              <Text style={styles.info}>Temperature: {weatherData.temperature}°C</Text>
-              <Text style={styles.info}>Weather: {weatherData.weather}</Text>
-              <Text style={styles.info}>Humidity: {weatherData.humidity}%</Text>
-            </View>
-          )}
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('Hive')}>
-              <Text style={styles.cardButtonText}>Hive Management</Text>
+      <View style={styles.overlay}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+           
+            <Text style={styles.title}>Weather Dashboard</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter city"
+              placeholderTextColor="#aaa"
+              value={city}
+              onChangeText={setCity}
+            />
+            <TouchableOpacity style={styles.getWeatherButton} onPress={fetchWeather}>
+              <Text style={styles.getWeatherButtonText}>Get Weather</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('User')}>
-              <Text style={styles.cardButtonText}>User Management</Text>
-            </TouchableOpacity>
+
+            {loading && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
+
+            {weatherData && (
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>Weather Information</Text>
+                <Text style={styles.info}>City: {weatherData.city}</Text>
+                <Text style={styles.info}>Temperature: {weatherData.temperature}°C</Text>
+                <Text style={styles.info}>Weather: {weatherData.weather}</Text>
+                <Text style={styles.info}>Humidity: {weatherData.humidity}%</Text>
+              </View>
+            )}
+
+            {/* Dashboard Section */}
+            <ScrollView
+              ref={scrollViewRef}
+              horizontal
+              pagingEnabled={false}
+              showsHorizontalScrollIndicator={false}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
+              contentContainerStyle={styles.carouselContainer}
+              snapToInterval={width * 0.6}
+              decelerationRate="fast"
+            >
+              {buttons.map((button, index) => (
+                <View
+                  key={button.id}
+                  style={[
+                    styles.buttonWrapper,
+                    activeIndex === index ? styles.activeButtonWrapper : null,
+                  ]}
+                >
+                  <TouchableOpacity
+                    style={styles.cardButton}
+                    onPress={() => navigation.navigate(button.navigateTo)}
+                  >
+                    <Image source={button.image} style={styles.cardButtonImage} />
+                    <View style={styles.cardOverlay}>
+                      <Text style={styles.cardButtonText}>{button.text}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </ImageBackground>
   );
 };
@@ -88,86 +148,112 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  scrollContainer: {
-    flexGrow: 1,
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {
-    width: '90%',
+  scrollContainer: {
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 10,
-    padding: 20,
-    marginVertical: 20,
+    paddingHorizontal: (width * 0.2) / 2,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 24,
     color: '#fff',
-    marginBottom: 20,
+    marginTop: 20,
+    fontWeight: 'bold',
   },
   input: {
-    width: '100%',
-    height: 45,
+    marginTop: 20,
+    width: 300,
+    height:40,
+    padding: 10,
+    borderRadius: 10,
     backgroundColor: '#fff',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-    color: '#000',
+    marginBottom: 20,
+    color:'#000',
   },
   getWeatherButton: {
-    backgroundColor: '#2196f3',
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginBottom: 15,
+    backgroundColor: '#ffa500',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   getWeatherButtonText: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
   },
   loader: {
-    marginTop: 10,
+    marginTop: 20,
   },
   card: {
-    width: '100%',
-    backgroundColor: '#333',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 30,
     borderRadius: 10,
-    padding: 15,
     marginTop: 20,
     alignItems: 'center',
+    width:300,
+
   },
   cardTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff',
     marginBottom: 10,
   },
   info: {
     fontSize: 16,
-    color: '#fff',
-    marginBottom: 5,
+    marginVertical: 2,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-    justifyContent: 'space-between',
-    width: '100%',
+  carouselContainer: {
+    marginTop:40,
+    alignItems: 'center',
+    paddingHorizontal: (width * 0.2) / 2,
+  },
+  buttonWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20, // Adjust this value for space between images
+    width: width * 0.5,
+  },
+  activeButtonWrapper: {
+    transform: [{ scale: 1.1 }],
   },
   cardButton: {
-    flex: 1,
-    marginHorizontal: 5,
-    backgroundColor: '#ffcc80',
-    borderRadius: 5,
-    paddingVertical: 10,
-    alignItems: 'center',
+    width: '100%',
+    height: width / 2.5,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  cardOverlay: {
+    
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+  },
+  cardButtonImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   cardButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
     setIsLoading(true); // Set loading to true before the request
 
     try {
-      const response = await axios.post('http://192.168.85.173:5000/login', {
+      const response = await axios.post('http://192.168.228.173:5000/login', {
         username,
         password,
       });

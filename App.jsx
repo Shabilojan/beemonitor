@@ -84,7 +84,7 @@ const App = () => {
 />
 
 <Stack.Screen
-  name="Bee farming"
+  name="Beefarming"
   component={Beefarming}
   options={{
     headerStyle: { backgroundColor: '#ffd54f' }, 
