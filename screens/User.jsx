@@ -22,7 +22,7 @@ const User = ({ navigation }) => {
 
     // Fetch user details
     const fetchUserDetails = () => {
-        axios.get(`http://192.168.85.173:5000/user-details/${username}`)
+        axios.get(`http://192.168.228.173:5000/user-details/${username}`)
             .then(response => {
                 if (response.data.success) {
                     setUser(response.data.data);
@@ -64,7 +64,7 @@ const User = ({ navigation }) => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://192.168.85.173:5000/user-details/${username}`)
+                    axios.delete(`http://192.168.228.173:5000/user-details/${username}`)
                         .then(() => {
                             setMessage(`User #${username} has been deleted.`);
                             handleClear();
@@ -89,7 +89,7 @@ const User = ({ navigation }) => {
     };
 
     const handleUpdate = () => {
-        axios.put(`http://192.168.85.173:5000/user-details/${username}`, editData)
+        axios.put(`http://192.168.228.173:5000/user-details/${username}`, editData)
             .then(() => {
                 setMessage(`User #${username} has been updated.`);
                 fetchUserDetails();
@@ -142,7 +142,7 @@ const User = ({ navigation }) => {
             return;
         }
 
-        axios.post(`http://192.168.85.173:5000/user-details`, newUser)
+        axios.post(`http://192.168.228.173:5000/user-details`, newUser)
             .then(() => {
                 setMessage(`User ${newUser.username} has been created.`);
                 setIsCreating(false);
@@ -164,8 +164,8 @@ const User = ({ navigation }) => {
                 <View style={styles.searchBar}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter User ID"
-                        keyboardType="numeric"
+                        placeholder="Enter User Name"
+                        keyboardType="text"
                         value={username}
                         onChangeText={setusername}
                     />
