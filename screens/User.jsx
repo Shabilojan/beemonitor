@@ -22,7 +22,7 @@ const User = ({ navigation }) => {
 
     // Fetch user details
     const fetchUserDetails = () => {
-        axios.get(`http://192.168.228.173:5000/user-details/${username}`)
+        axios.get(`http://192.168.161.173:5000/user-details/${username}`)
             .then(response => {
                 if (response.data.success) {
                     setUser(response.data.data);
@@ -64,7 +64,7 @@ const User = ({ navigation }) => {
             {
                 text: 'Delete',
                 onPress: () => {
-                    axios.delete(`http://192.168.228.173:5000/user-details/${username}`)
+                    axios.delete(`http://192.168.161.173:5000/user-details/${username}`)
                         .then(() => {
                             setMessage(`User #${username} has been deleted.`);
                             handleClear();
@@ -89,7 +89,7 @@ const User = ({ navigation }) => {
     };
 
     const handleUpdate = () => {
-        axios.put(`http://192.168.228.173:5000/user-details/${username}`, editData)
+        axios.put(`http://192.168.161.173:5000/user-details/${username}`, editData)
             .then(() => {
                 setMessage(`User #${username} has been updated.`);
                 fetchUserDetails();
@@ -142,7 +142,7 @@ const User = ({ navigation }) => {
             return;
         }
 
-        axios.post(`http://192.168.228.173:5000/user-details`, newUser)
+        axios.post(`http://192.168.161.173:5000/user-details`, newUser)
             .then(() => {
                 setMessage(`User ${newUser.username} has been created.`);
                 setIsCreating(false);
@@ -294,18 +294,22 @@ const User = ({ navigation }) => {
                     
                 )}
             </ScrollView>
-         <View style={styles.footer}>
+            <View style={styles.footer}>
                 <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
                     <Image source={require('../assets/Vector.png')} style={styles.icon} />
                     <Text style={styles.footerText}>HIVE</Text>
                 </TouchableOpacity>
-                
+
+                 
                 <View style={styles.iconWrapper}>
+                <TouchableOpacity onPress={() => navigation.navigate('Dashboard')} style={styles.footerItem}>
                     <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
                     <Text style={styles.centeredText}>Dashboard</Text>
+                    </TouchableOpacity>
                 </View>
+               
                 
-                <TouchableOpacity onPress={() => navigation.navigate('Beefarming')} style={styles.footerItem}>
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyStatic')} style={styles.footerItem}>
                     <Image source={require('../assets/vector2.png')} style={styles.icon} />
                     <Text style={styles.footerText}>Honey Bar</Text>
                 </TouchableOpacity>
@@ -358,7 +362,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: '#ffcc80',
+        backgroundColor: '#ffa500',
         padding: 10,
         marginBottom:10,
         borderRadius: 5,
@@ -410,7 +414,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#ffd54f',
-        width: '100%',
+        width: '101%',
         height: 80,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

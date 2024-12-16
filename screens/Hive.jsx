@@ -320,13 +320,17 @@ const Hive = ({ navigation }) => {
                     <Image source={require('../assets/Vector.png')} style={styles.icon} />
                     <Text style={styles.footerText}>HIVE</Text>
                 </TouchableOpacity>
-                
+
+                 
                 <View style={styles.iconWrapper}>
+                <TouchableOpacity onPress={() => navigation.navigate('Dashboard')} style={styles.footerItem}>
                     <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
                     <Text style={styles.centeredText}>Dashboard</Text>
+                    </TouchableOpacity>
                 </View>
+               
                 
-                <TouchableOpacity onPress={() => navigation.navigate('HoneyBarScreen')} style={styles.footerItem}>
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyStatic')} style={styles.footerItem}>
                     <Image source={require('../assets/vector2.png')} style={styles.icon} />
                     <Text style={styles.footerText}>Honey Bar</Text>
                 </TouchableOpacity>
@@ -374,7 +378,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        backgroundColor: '#ffcc80',
+        backgroundColor: '#ffa500',
         padding: 10,
         borderRadius: 5,
         flex: 1,
@@ -424,7 +428,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#ffd54f',
-        width: '100%',
+        width: '101%',
         height: 80,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

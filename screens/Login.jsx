@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -11,24 +11,47 @@ import {
   Image,
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Add AsyncStorage import
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        // If token exists, navigate to the dashboard
+        navigation.navigate('Dashboard');
+      }
+    };
+    checkLoginStatus();
+  }, [navigation]);
+
   const handleLogin = async () => {
     setIsLoading(true); // Set loading to true before the request
 
     try {
-      const response = await axios.post('http://192.168.228.173:5000/login', {
+      const response = await axios.post('http://192.168.161.173:5000/login', {
         username,
         password,
       });
 
       if (response.data.success) {
+        // Save token and role in AsyncStorage
+        await AsyncStorage.setItem('token', response.data.token); // Save the token
+        await AsyncStorage.setItem('role', response.data.role); // Save the role
+
         Alert.alert('Login Successful', 'Welcome!');
-        navigation.navigate('Dashboard'); // Navigate to Dashboard if login is successful
+        
+        // Navigate based on role
+        if (response.data.role === 'admin') {
+          navigation.navigate('Dashboard'); // Admin dashboard
+        } else {
+          navigation.navigate('Dashboard'); // Regular user screen
+        }
       } else {
         Alert.alert('Login Failed', response.data.message);
       }

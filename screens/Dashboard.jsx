@@ -26,19 +26,19 @@ const Dashboard = () => {
   const buttons = [
     {
       id: 1,
-      image: require('../assets/Pic-03.jpeg'),
+      image: require('../assets/beekeeper.jpg'),
       text: 'Hive Management',
       navigateTo: 'Hive',
     },
     {
       id: 2,
-      image: require('../assets/Pic-03.jpeg'),
+      image: require('../assets/user.jpeg'),
       text: 'User Management',
       navigateTo: 'User',
     },
     {
       id: 3,
-      image: require('../assets/Pic-03.jpeg'),
+      image: require('../assets/beefarming.jpeg'),
       text: 'Bee Farming',
       navigateTo: 'Beefarming',
     },
@@ -54,7 +54,7 @@ const Dashboard = () => {
     setLoading(true);
     setWeatherData(null);
     try {
-      const response = await fetch(`http://192.168.228.173:5000/weather/${city}`);
+      const response = await fetch(`http://192.168.161.173:5000/weather/${city}`);
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error ${response.status}: ${errorText}`);
@@ -140,6 +140,26 @@ const Dashboard = () => {
           </View>
         </ScrollView>
       </View>
+      <View style={styles.footer}>
+      <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
+          <Image source={require('../assets/Vector.png')} style={styles.icon} />
+          <Text style={styles.footerText}>HIVE</Text>
+      </TouchableOpacity>
+
+       
+      <View style={styles.iconWrapper}>
+      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')} style={styles.footerItem}>
+          <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
+          <Text style={styles.centeredText}>Dashboard</Text>
+          </TouchableOpacity>
+      </View>
+     
+      
+      <TouchableOpacity onPress={() => navigation.navigate('HoneyStatic')} style={styles.footerItem}>
+          <Image source={require('../assets/vector2.png')} style={styles.icon} />
+          <Text style={styles.footerText}>Honey Bar</Text>
+      </TouchableOpacity>
+  </View>
     </ImageBackground>
   );
 };
@@ -175,9 +195,9 @@ const styles = StyleSheet.create({
     height:40,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     marginBottom: 20,
-    color:'#000',
+    color:'#fff',
   },
   getWeatherButton: {
     backgroundColor: '#ffa500',
@@ -255,6 +275,62 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffd54f',
+    width: '101%',
+    height: 80,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: -2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    position: 'absolute',
+    bottom: 0,
+    paddingHorizontal: 40,
+},
+footerItem: {
+    alignItems: 'center',
+},
+icon: {
+    width: 35,
+    height: 35,
+},
+roundIcon: {
+    marginHorizontal: 170,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#000',
+    marginBottom: 12,
+    backgroundColor: '#ffd54f',
+},
+iconWrapper: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    justifyContent: 'center',
+},
+centeredText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: 'bold',
+    marginTop: 2,
+},
+footerText: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#000',
+    fontWeight: 'bold',
+},
 });
 
 export default Dashboard;
