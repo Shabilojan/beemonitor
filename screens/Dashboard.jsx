@@ -12,6 +12,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -70,6 +71,16 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+  const handleLogout = async () => {
+    try {
+        // Remove the JWT token and role from AsyncStorage
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('role');
+        navigation.navigate('Login'); // This ensures the navigation works correctly
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
+  };
 
   return (
     <ImageBackground 
@@ -80,6 +91,10 @@ const Dashboard = () => {
       <View style={styles.overlay}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.container}>
+
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+              <Text style={styles.getWeatherButtonText}>Logout</Text>
+            </TouchableOpacity>
            
             <Text style={styles.title}>Weather Dashboard</Text>
             <TextInput
@@ -142,23 +157,23 @@ const Dashboard = () => {
       </View>
       <View style={styles.footer}>
       <TouchableOpacity onPress={() => navigation.navigate('Hive')} style={styles.footerItem}>
-          <Image source={require('../assets/Vector.png')} style={styles.icon} />
-          <Text style={styles.footerText}>HIVE</Text>
-      </TouchableOpacity>
+                    <Image source={require('../assets/Vector.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>HIVE</Text>
+                </TouchableOpacity>
 
-       
-      <View style={styles.iconWrapper}>
-      <TouchableOpacity onPress={() => navigation.navigate('Dashboard')} style={styles.footerItem}>
-          <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
-          <Text style={styles.centeredText}>Dashboard</Text>
-          </TouchableOpacity>
-      </View>
-     
-      
-      <TouchableOpacity onPress={() => navigation.navigate('HoneyStatic')} style={styles.footerItem}>
-          <Image source={require('../assets/vector2.png')} style={styles.icon} />
-          <Text style={styles.footerText}>Honey Bar</Text>
-      </TouchableOpacity>
+                 
+                <View style={styles.iconWrapper}>
+                <TouchableOpacity onPress={() => navigation.navigate('Dashboard')} style={styles.footerItem}>
+                    <Image source={require('../assets/vector3.png')} style={styles.roundIcon} />
+                    <Text style={styles.centeredText}>Dashboard</Text>
+                    </TouchableOpacity>
+                </View>
+               
+                
+                <TouchableOpacity onPress={() => navigation.navigate('HoneyStatic')} style={styles.footerItem}>
+                    <Image source={require('../assets/vector2.png')} style={styles.icon} />
+                    <Text style={styles.footerText}>Honey Bar</Text>
+                </TouchableOpacity>
   </View>
     </ImageBackground>
   );
@@ -188,6 +203,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: 20,
     fontWeight: 'bold',
+  },
+  logoutButton: {
+    marginVertical: 15,
+    backgroundColor: '#ffa500',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginLeft: '82%',
   },
   input: {
     marginTop: 20,

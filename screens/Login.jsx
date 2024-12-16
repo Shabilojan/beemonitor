@@ -24,7 +24,7 @@ const Login = ({ navigation }) => {
       const token = await AsyncStorage.getItem('token');
       if (token) {
         // If token exists, navigate to the dashboard
-        navigation.navigate('Dashboard');
+        navigation.navigate('');
       }
     };
     checkLoginStatus();
